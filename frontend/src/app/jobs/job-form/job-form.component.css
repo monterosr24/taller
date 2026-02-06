@@ -1,0 +1,40 @@
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+mat-card {
+    padding: 20px;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.date-range {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.half-width {
+    flex: 1;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+mat-icon[matPrefix],
+mat-icon[matSuffix] {
+    color: #666;
+}

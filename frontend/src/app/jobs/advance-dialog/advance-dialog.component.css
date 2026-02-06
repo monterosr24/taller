@@ -1,0 +1,60 @@
+mat-dialog-content {
+    min-width: 400px;
+    padding: 20px 0;
+}
+
+.job-info {
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.info-row.balance-row {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-weight: 500;
+}
+
+.label {
+    color: #666;
+    font-size: 14px;
+}
+
+.value {
+    font-weight: 500;
+}
+
+.value.amount {
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.value.amount.warn {
+    color: #ff9800;
+}
+
+.value.amount.success {
+    color: #4caf50;
+    font-size: 18px;
+}
+
+mat-divider {
+    margin: 20px 0;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+mat-dialog-actions {
+    padding: 16px 24px;
+}

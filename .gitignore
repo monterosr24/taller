@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+**/dist/
+**/build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Testing
+coverage/
+*.coverage
+.nyc_output/
+
+# Angular specific
+.angular/
+**/angular/
+
+# Compiled output
+*.js.map
+*.d.ts.map
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Database files (opcional - quitar si necesitas versionar)
+*.sqlite
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Package manager locks (opcional - descomentar si quieres ignorar)
+# package-lock.json
+# yarn.lock

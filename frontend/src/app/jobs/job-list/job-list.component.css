@@ -1,0 +1,108 @@
+.container {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.vehicle-info,
+.worker-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #666;
+}
+
+.description-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.amount {
+    text-align: right;
+    font-family: monospace;
+}
+
+.amount.advance {
+    color: #ff9800;
+}
+
+.amount.balance {
+    color: #4caf50;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-pending {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.status-in_progress {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.status-completed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-cancelled {
+    background-color: #f5f5f5;
+    color: #616161;
+}
+
+.delete-option {
+    color: #f44336;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+}
+
+.no-data mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ccc;
+    margin-bottom: 16px;
+}
+
+.no-data p {
+    color: #666;
+    margin-bottom: 16px;
+}
