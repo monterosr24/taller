@@ -24,13 +24,13 @@ export class WorkerFormComponent implements OnInit {
         private snackBar: MatSnackBar
     ) {
         this.workerForm = this.fb.group({
-            first_name: ['', Validators.required],
-            last_name: ['', Validators.required],
-            document_number: [''],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            documentNumber: [''],
             phone: [''],
             email: ['', Validators.email],
-            hire_date: [''],
-            base_salary: ['', [Validators.min(0)]]
+            hireDate: [''],
+            baseSalary: ['', [Validators.min(0)]]
         });
     }
 

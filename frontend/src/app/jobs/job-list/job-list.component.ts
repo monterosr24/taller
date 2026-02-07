@@ -65,16 +65,16 @@ export class JobListComponent implements OnInit {
 
     getWorkerName(workerId: number): string {
         const worker = this.workers.find(w => w.id === workerId);
-        return worker ? `${worker.first_name} ${worker.last_name}` : 'N/A';
+        return worker ? `${worker.firstName} ${worker.lastName}` : 'N/A';
     }
 
     getVehicleInfo(vehicleId: number): string {
         const vehicle = this.vehicles.find(v => v.id === vehicleId);
-        return vehicle ? `${vehicle.license_plate} - ${vehicle.brand} ${vehicle.model}` : 'N/A';
+        return vehicle ? `${vehicle.licensePlate} - ${vehicle.brand} ${vehicle.model}` : 'N/A';
     }
 
     getBalance(job: Job): number {
-        return job.total_amount - (job.advance_amount || 0);
+        return job.totalAmount - (job.advanceAmount || 0);
     }
 
     getStatusColor(status: string): string {

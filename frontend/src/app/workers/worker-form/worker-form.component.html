@@ -7,23 +7,23 @@
                 <div class="form-grid">
                     <mat-form-field class="form-field-full-width">
                         <mat-label>First Name</mat-label>
-                        <input matInput formControlName="first_name" required>
-                        <mat-error *ngIf="workerForm.get('first_name')?.hasError('required')">
+                        <input matInput formControlName="firstName" required>
+                        <mat-error *ngIf="workerForm.get('firstName')?.hasError('required')">
                             First name is required
                         </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="form-field-full-width">
                         <mat-label>Last Name</mat-label>
-                        <input matInput formControlName="last_name" required>
-                        <mat-error *ngIf="workerForm.get('last_name')?.hasError('required')">
+                        <input matInput formControlName="lastName" required>
+                        <mat-error *ngIf="workerForm.get('lastName')?.hasError('required')">
                             Last name is required
                         </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="form-field-full-width">
                         <mat-label>Document Number</mat-label>
-                        <input matInput formControlName="document_number">
+                        <input matInput formControlName="documentNumber">
                     </mat-form-field>
 
                     <mat-form-field class="form-field-full-width">
@@ -41,16 +41,16 @@
 
                     <mat-form-field class="form-field-full-width">
                         <mat-label>Hire Date</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="hire_date">
+                        <input matInput [matDatepicker]="picker" formControlName="hireDate">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-field-full-width">
                         <mat-label>Base Salary</mat-label>
-                        <input matInput type="number" formControlName="base_salary">
+                        <input matInput type="number" formControlName="baseSalary">
                         <span matPrefix>$ </span>
-                        <mat-error *ngIf="workerForm.get('base_salary')?.hasError('min')">
+                        <mat-error *ngIf="workerForm.get('baseSalary')?.hasError('min')">
                             Salary must be positive
                         </mat-error>
                     </mat-form-field>

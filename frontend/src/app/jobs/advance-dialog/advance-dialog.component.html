@@ -9,11 +9,11 @@
         </div>
         <div class="info-row">
             <span class="label">Monto Total:</span>
-            <span class="value amount">{{ job.total_amount | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span class="value amount">{{ job.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
         </div>
         <div class="info-row">
             <span class="label">Adelantos Previos:</span>
-            <span class="value amount warn">{{ job.advance_amount || 0 | currency:'USD':'symbol':'1.2-2' }}</span>
+            <span class="value amount warn">{{ job.advanceAmount || 0 | currency:'USD':'symbol':'1.2-2' }}</span>
         </div>
         <div class="info-row balance-row">
             <span class="label">Saldo Pendiente:</span>

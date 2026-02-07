@@ -62,7 +62,7 @@ export class JobFormComponent implements OnInit {
     loadWorkers(): void {
         this.workerService.getAll().subscribe({
             next: (data) => {
-                this.workers = data.filter(w => w.is_active);
+                this.workers = data.filter(w => w.isActive);
             },
             error: (error) => console.error('Error loading workers:', error)
         });
@@ -80,13 +80,13 @@ export class JobFormComponent implements OnInit {
         this.jobService.getById(id).subscribe({
             next: (job) => {
                 this.jobForm.patchValue({
-                    vehicleId: job.vehicle_id,
-                    workerId: job.worker_id,
+                    vehicleId: job.vehicleId,
+                    workerId: job.workerId,
                     description: job.description,
-                    totalAmount: job.total_amount,
+                    totalAmount: job.totalAmount,
                     status: job.status,
-                    startDate: job.start_date,
-                    endDate: job.end_date
+                    startDate: job.startDate,
+                    endDate: job.endDate
                 });
                 this.loading = false;
             },
@@ -98,11 +98,11 @@ export class JobFormComponent implements OnInit {
     }
 
     getWorkerDisplayName(worker: Worker): string {
-        return `${worker.first_name} ${worker.last_name}`;
+        return `${worker.firstName} ${worker.lastName}`;
     }
 
     getVehicleDisplayName(vehicle: Vehicle): string {
-        return `${vehicle.license_plate} - ${vehicle.brand} ${vehicle.model}`;
+        return `${vehicle.licensePlate} - ${vehicle.brand} ${vehicle.model}`;
     }
 
     onSubmit(): void {

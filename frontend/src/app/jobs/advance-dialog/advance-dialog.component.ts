@@ -19,7 +19,7 @@ export class AdvanceDialogComponent {
         @Inject(MAT_DIALOG_DATA) public data: { job: Job }
     ) {
         this.job = data.job;
-        this.maxAdvance = this.job.total_amount - (this.job.advance_amount || 0);
+        this.maxAdvance = this.job.totalAmount - (this.job.advanceAmount || 0);
 
         this.advanceForm = this.fb.group({
             amount: ['', [Validators.required, Validators.min(0.01), Validators.max(this.maxAdvance)]],
@@ -29,7 +29,7 @@ export class AdvanceDialogComponent {
     }
 
     get balance(): number {
-        return this.job.total_amount - (this.job.advance_amount || 0);
+        return this.job.totalAmount - (this.job.advanceAmount || 0);
     }
 
     onCancel(): void {

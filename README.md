@@ -1,265 +1,483 @@
-# Workshop Management System
+# 🚗 Workshop Management System
 
-A complete workshop management system built with Node.js, TypeScript, Express, Angular, and SQL Server.
+Sistema completo de gestión para talleres mecánicos construido con **Angular** + **Node.js/Express** + **Prisma ORM** + **SQL Server**.
 
-## Features
+## 📋 Tabla de Contenidos
 
-- ✅ **Worker Management** - Track employee information, salaries, and status
-- ✅ **Vehicle Registration** - Manage vehicles and owner information  
-- ✅ **Job Tracking** - Assign jobs to workers with progress tracking
-- ✅ **Payment Advances** - Track advances against jobs
-- ✅ **Vacation Management** - Request and approve vacation time
-- ✅ **Invoice Tracking** - Purchase invoices with payment history
+- [Características](#-características)
+- [Tecnologías](#️-tecnologías)
+- [Requisitos Previos](#-requisitos-previos)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [API Endpoints](#-api-endpoints)
+- [Base de Datos](#️-base-de-datos)
+- [Scripts Disponibles](#-scripts-disponibles)
+- [Troubleshooting](#-troubleshooting)
 
-## Project Structure
+---
+
+## ✨ Características
+
+### Gestión de Trabajadores
+- 👷 CRUD completo de mecánicos
+- 📊 Seguimiento de salarios y contrataciones
+- 🔍 Búsqueda y filtrado
+- ✅ Soft delete (desactivación)
+
+### Gestión de Vehículos
+- 🚙 Registro de vehículos con propietarios
+- 📝 Historial de trabajos por vehículo
+- 🔎 Búsqueda por placa
+
+### Gestión de Trabajos
+- 📋 Creación y seguimiento de trabajos
+- 💰 Control de montos y adelantos
+- 📅 Fechas de inicio y finalización
+- 🔄 Estados (pendiente, en progreso, completado)
+- 💵 Sistema de adelantos integrado
+
+### Vacaciones
+- 🏖️ Solicitudes de vacaciones
+- ⏱️ Cálculo automático de días
+- ✅ Aprobación/Rechazo
+
+### Facturación
+- 🧾 Gestión de facturas de proveedores
+- 💳 Registro de pagos
+- 📊 Estados de pago (pendiente, parcial, pagado)
+- 🔢 Cálculo automático de saldos
+
+---
+
+## 🛠️ Tecnologías
+
+### Frontend
+- **Angular 17** - Framework frontend
+- **Angular Material** - Componentes UI
+- **TypeScript** - Lenguaje principal
+- **RxJS** - Programación reactiva
+- **SCSS** - Estilos
+
+### Backend
+- **Node.js 18+** - Runtime
+- **Express.js** - Framework web
+- **TypeScript** - Lenguaje principal
+- **Prisma ORM** - Acceso a BD type-safe
+- **SQL Server** - Base de datos
+
+### Características Técnicas
+- ✅ **Type-Safety completo** (Frontend + Backend)
+- ✅ **Conversión automática** camelCase ↔ snake_case
+- ✅ **Validación de formularios** con Reactive Forms
+- ✅ **Manejo de errores** con SnackBars
+- ✅ **Relaciones automáticas** en Prisma
+- ✅ **Hot reload** en desarrollo
+
+---
+
+## 📦 Requisitos Previos
+
+- **Node.js** 18 o superior
+- **npm** 8 o superior
+- **SQL Server** (Express edition o superior)
+- **Angular CLI** 17 (`npm install -g @angular/cli`)
+
+---
+
+## 🚀 Instalación
+
+### 1. Clonar el Repositorio
+```bash
+git clone <repository-url>
+cd taller
+```
+
+### 2. Configurar Base de Datos
+
+**Crear la base de datos en SQL Server:**
+```sql
+CREATE DATABASE WorkshopDB;
+GO
+
+-- Crear usuario
+CREATE LOGIN workshop_user WITH PASSWORD = 'Workshop123!';
+USE WorkshopDB;
+CREATE USER workshop_user FOR LOGIN workshop_user;
+GRANT ALL PRIVILEGES ON DATABASE::WorkshopDB TO workshop_user;
+```
+
+**Ejecutar el script inicial:**
+```bash
+# El script se encuentra en: backend/migrations/001_initial_schema.sql
+# Ejecutarlo en SQL Server Management Studio o Azure Data Studio
+```
+
+### 3. Configurar Backend
+
+```bash
+cd backend
+npm install
+
+# Crear archivo .env
+cp .env.example .env
+```
+
+**Editar `backend/.env`:**
+```env
+# Database Configuration
+DB_SERVER=localhost\SQLEXPRESS
+DB_NAME=WorkshopDB
+DB_USER=workshop_user
+DB_PASSWORD=Workshop123!
+DB_ENCRYPT=true
+DB_TRUST_SERVER_CERTIFICATE=true
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Prisma Database URL
+DATABASE_URL="sqlserver://localhost;database=WorkshopDB;user=workshop_user;password=Workshop123!;encrypt=true;trustServerCertificate=true;instanceName=SQLEXPRESS"
+```
+
+**Generar Prisma Client:**
+```bash
+npm run prisma:generate
+```
+
+### 4. Configurar Frontend
+
+```bash
+cd ../frontend
+npm install
+```
+
+**Editar `frontend/src/environments/environment.ts`:**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
+```
+
+---
+
+## 💻 Uso
+
+### Iniciar Backend
+```bash
+cd backend
+npm run dev
+```
+Servidor corriendo en: http://localhost:3000
+
+### Iniciar Frontend
+```bash
+cd frontend
+npm start
+```
+Aplicación corriendo en: http://localhost:4200
+
+### Visualizar Base de Datos (Opcional)
+```bash
+cd backend
+npm run prisma:studio
+```
+Prisma Studio en: http://localhost:5555
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```
 taller/
-├── backend/           # Node.js + Express API
+├── backend/                    # API Node.js
+│   ├── prisma/
+│   │   ├── schema.prisma      # Schema de Prisma (8 modelos)
+│   │   └── migrations/        # Migraciones
 │   ├── src/
-│   │   ├── config/    # Database & migrations
-│   │   ├── models/    # TypeScript interfaces
-│   │   ├── repositories/  # Data access layer
-│   │   ├── routes/    # API endpoints
-│   │   └── index.ts   # Main app
-│   ├── migrations/    # SQL migration files
+│   │   ├── config/
+│   │   │   └── prisma.ts      # Cliente Prisma
+│   │   ├── models/            # Interfaces TypeScript
+│   │   ├── repositories/      # Capa de datos (Prisma)
+│   │   │   ├── job.repository.ts
+│   │   │   ├── advance.repository.ts
+│   │   │   ├── worker.repository.ts
+│   │   │   ├── vehicle.repository.ts
+│   │   │   ├── vacation.repository.ts
+│   │   │   ├── invoice.repository.ts
+│   │   │   └── invoice-payment.repository.ts
+│   │   ├── routes/            # Endpoints API
+│   │   └── index.ts           # Entry point
+│   ├── .env                   # Variables de entorno
 │   └── package.json
 │
-└── frontend/          # Angular application
-    ├── src/
-    │   ├── app/       # Angular components
-    │   ├── environments/  # Config files
-    │   └── styles.css # Global styles
-    └── package.json
+├── frontend/                   # App Angular
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/          # Servicios globales
+│   │   │   ├── shared/        # Componentes compartidos
+│   │   │   ├── workers/       # Módulo trabajadores
+│   │   │   ├── vehicles/      # Módulo vehículos
+│   │   │   ├── jobs/          # Módulo trabajos
+│   │   │   ├── vacations/     # Módulo vacaciones
+│   │   │   └── invoices/      # Módulo facturas
+│   │   ├── environments/      # Configuración
+│   │   └── styles.css         # Estilos globales
+│   └── package.json
+│
+└── README.md                   # Este archivo
 ```
 
-## Backend Setup
+---
 
-### Prerequisites
-- Node.js 18+
-- SQL Server (local instance)
-- Windows Authentication or SQL credentials
+## 🔌 API Endpoints
 
-### Installation
+### Workers (Trabajadores)
+```
+GET    /api/workers           # Listar trabajadores activos
+GET    /api/workers/:id       # Obtener por ID
+POST   /api/workers           # Crear trabajador
+PUT    /api/workers/:id       # Actualizar
+DELETE /api/workers/:id       # Desactivar (soft delete)
+```
 
-1. **Navigate to backend:**
-   ```bash
-   cd backend
-   npm install
-   ```
+### Vehicles (Vehículos)
+```
+GET    /api/vehicles          # Listar vehículos
+GET    /api/vehicles/:id      # Obtener por ID
+POST   /api/vehicles          # Crear vehículo
+PUT    /api/vehicles/:id      # Actualizar
+DELETE /api/vehicles/:id      # Eliminar
+```
 
-2. **Configure database:**
-   - Edit `.env` file with your SQL Server settings
-   - Default uses Windows Authentication on `localhost`
+### Jobs (Trabajos)
+```
+GET    /api/jobs              # Listar trabajos
+GET    /api/jobs/:id          # Obtener por ID
+POST   /api/jobs              # Crear trabajo
+PUT    /api/jobs/:id          # Actualizar
+DELETE /api/jobs/:id          # Eliminar
+POST   /api/jobs/:id/advances # Registrar adelanto
+```
 
-3. **Run migrations:**
-   ```bash
-   npm run migrate
-   ```
+### Vacations (Vacaciones)
+```
+GET    /api/vacations         # Listar vacaciones
+GET    /api/vacations/:id     # Obtener por ID
+POST   /api/vacations         # Crear solicitud
+PUT    /api/vacations/:id     # Actualizar
+DELETE /api/vacations/:id     # Eliminar
+```
 
-4. **Start server:**
-   ```bash
-   npm run dev
-   ```
+### Invoices (Facturas)
+```
+GET    /api/invoices          # Listar facturas
+GET    /api/invoices/:id      # Obtener por ID
+POST   /api/invoices          # Crear factura
+PUT    /api/invoices/:id      # Actualizar
+DELETE /api/invoices/:id      # Eliminar
+```
 
-Server runs on `http://localhost:3000`
+### Invoice Payments (Pagos)
+```
+GET    /api/invoice-payments     # Listar pagos
+POST   /api/invoice-payments     # Registrar pago
+DELETE /api/invoice-payments/:id # Eliminar pago
+```
 
-### API Endpoints
+---
 
-#### Workers
-- `GET /api/workers` - List all active workers
-- `POST /api/workers` - Create new worker
-- `PUT /api/workers/:id` - Update worker
-- `DELETE /api/workers/:id` - Deactivate worker
+## 🗄️ Base de Datos
 
-#### Vehicles
-- `GET /api/vehicles` - List all vehicles
-- `POST /api/vehicles` - Register new vehicle
+### Modelos Prisma
 
-#### Jobs
-- `GET /api/jobs` - List all jobs with worker/vehicle details
-- `POST /api/jobs` - Create new job
-- `POST /api/jobs/:id/advances` - Add payment advance
-- `GET /api/jobs/:id/advances` - List job advances
+El sistema usa **Prisma ORM** con los siguientes modelos:
 
-#### Vacations
-- `GET /api/vacations` - List all vacation requests
-- `POST /api/vacations` - Submit vacation request
-- `PUT /api/vacations/:id` - Update status (approve/reject)
+#### Job (Trabajo)
+- Relación con `Vehicle` (vehículo)
+- Relación con `Worker` (mecánico)
+- Múltiples `Advance` (adelantos)
+- Campos: descripción, montos, fechas, estado
 
-#### Invoices
-- `GET /api/invoices` - List all invoices
-- `POST /api/invoices` - Create new invoice
-- `POST /api/invoices/:id/payments` - Add payment
-- `GET /api/invoices/:id/payments` - List invoice payments
+#### Worker (Trabajador)
+- Múltiples `Job` (trabajos)
+- Múltiples `Vacation` (vacaciones)
+- Campos: nombre, documento, salario, fecha contratación
 
-## Frontend Setup
+#### Vehicle (Vehículo)
+- Múltiples `Job` (trabajos)
+- Campos: placa (única), marca, modelo, propietario
 
-### Prerequisites
-- Node.js 18+
-- Angular CLI: `npm install -g @angular/cli`
+#### Advance (Adelanto)
+- Relación con `Job`
+- Actualiza automáticamente `job.advanceAmount`
 
-### Installation
+#### Invoice (Factura)
+- Múltiples `InvoicePayment` (pagos)
+- Cálculo automático de estado (pending/partial/paid)
 
-1. **Navigate to frontend:**
-   ```bash
-   cd frontend
-   npm install
-   ```
+### Características de Prisma
 
-2. **Start development server:**
-   ```bash
-   npm start
-   ```
+**Type-Safety Completo:**
+```typescript
+const job = await prisma.job.findFirst({
+  include: { vehicle: true, worker: true }
+});
+job.vehicle.licensePlate  // ✅ Autocomplete
+```
 
-Application runs on `http://localhost:4200`
+**Conversión Automática:**
+```typescript
+// Frontend: { vehicleId: 1, totalAmount: 1000 }
+// DB: { vehicle_id: 1, total_amount: 1000 }
+// Prisma convierte automáticamente
+```
 
-## Database Schema
+**Relaciones:**
+```typescript
+const job = await prisma.job.findUnique({
+  where: { id: 1 },
+  include: {
+    vehicle: true,
+    worker: true,
+    advances: true
+  }
+});
+```
 
-### Tables
+---
 
-- **Workers** - Employee information and status
-- **Vehicles** - Vehicle registry with owner details
-- **Jobs** - Work orders with worker/vehicle assignment
-- **Advances** - Payment advances linked to jobs
-- **Vacations** - Vacation requests with approval workflow
-- **Invoices** - Purchase invoices with payment tracking
-- **Invoice_Payments** - Individual payments against invoices
-- **Migrations** - Database version tracking
-
-### Key Features
-
-- **Automatic calculations:** 
-  - Job advance totals
-  - Invoice payment status (pending → partial → paid)
-- **Referential integrity:** Foreign keys with cascade deletes
-- **Soft deletes:** Workers marked inactive instead of deleted
-- **Indexes:** Optimized queries on foreign keys
-
-## Technology Stack
-
-### Backend
-- **Node.js** + **TypeScript** - Type-safe server-side development
-- **Express** - RESTful API framework
-- **mssql** - SQL Server driver with connection pooling
-- **dotenv** - Environment configuration
-
-### Frontend
-- **Angular 17** - Modern reactive framework
-- **Angular Material** - UI component library
-- **RxJS** - Reactive programming
-- **TypeScript** - Type-safe client development
-
-### Database
-- **SQL Server** - Enterprise-grade relational database
-- **Custom migrations** - Version-controlled schema changes
-- **Transactions** - ACID compliance for critical operations
-
-## Development Workflow
-
-1. **Make schema changes:**
-   - Create new migration SQL file in `backend/migrations/`
-   - Name it with incremental number: `002_add_feature.sql`
-   - Run: `npm run migrate`
-
-2. **Add new feature:**
-   - Create model in `backend/src/models/`
-   - Create repository in `backend/src/repositories/`
-   - Create routes in `backend/src/routes/`
-   - Add router to `backend/src/index.ts`
-
-3. **Frontend integration:**
-   - Create Angular service to call API
-   - Build components for CRUD operations
-   - Add routes to Angular router
-
-## Production Deployment
+## 📜 Scripts Disponibles
 
 ### Backend
 ```bash
+npm run dev              # Desarrollo con hot reload
+npm run build            # Compilar TypeScript
+npm start                # Producción
+npm run prisma:generate  # Generar Prisma Client
+npm run prisma:studio    # UI visual de base de datos
+npm run prisma:pull      # Sincronizar schema desde BD
+npm run prisma:migrate   # Crear migración
+```
+
+### Frontend
+```bash
+npm start                # Desarrollo (http://localhost:4200)
+npm run build            # Build producción
+npm test                 # Tests unitarios
+npm run lint             # Linter
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Backend
+
+**Error: "Cannot find module '@prisma/client'"**
+```bash
 cd backend
-npm run build
+npm run prisma:generate
+```
+
+**Error: "address already in use :::3000"**
+```bash
+# Windows
+taskkill /F /IM node.exe
+
+# Linux/Mac
+killall node
+```
+
+**Error de conexión a SQL Server**
+```bash
+# Verificar que SQL Server está corriendo
+# Verificar credenciales en .env
+# Verificar que SQL Server Authentication está habilitado
+```
+
+**Ver datos visualmente**
+```bash
+cd backend
+npm run prisma:studio
+```
+
+### Frontend
+
+**Error al instalar dependencias**
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Error de CORS**
+- Verificar que el backend tiene CORS habilitado
+- Verificar que `apiUrl` en `environment.ts` es correcto
+
+**Error al compilar**
+```bash
+# Limpiar caché de Angular
+rm -rf .angular
 npm start
 ```
 
+---
+
+## 🎨 Características Técnicas Destacadas
+
 ### Frontend
-```bash
-cd frontend
-ng build --configuration production
-```
+- ✅ **Reactive Forms** con validación
+- ✅ **Angular Material** para UI consistente
+- ✅ **Servicios compartidos** para API calls
+- ✅ **Error handling** con SnackBars
+- ✅ **Lazy loading** de módulos
+- ✅ **Responsive design**
 
-Serve the `dist/` folder with any web server (nginx, IIS, etc.)
+### Backend
+- ✅ **Prisma ORM** - Type-safe database access
+- ✅ **Automatic case conversion** (camelCase ↔ snake_case)
+- ✅ **Transaction support** para operaciones complejas
+- ✅ **Relaciones automáticas** entre modelos
+- ✅ **Repository pattern** para separación de responsabilidades
+- ✅ **Error logging** detallado
 
-## Environment Variables
+---
 
-### Backend (.env)
-```
-DB_SERVER=localhost
-DB_NAME=WorkshopDB
-DB_TRUSTED_CONNECTION=true
-PORT=3000
-NODE_ENV=production
-```
+## 🔐 Seguridad
 
-### Frontend (environment.ts)
-```typescript
-apiUrl: 'http://your-server.com/api'
-```
+- SQL Server con autenticación por usuario
+- Variables de entorno para credenciales
+- Validación de datos en frontend y backend
+- Prepared statements (Prisma automáticamente)
+- CORS configurado
 
-## Testing
+---
 
-### API Testing
-Use tools like Postman or curl:
+## 🤝 Contribuir
 
-```bash
-# Create worker
-curl -X POST http://localhost:3000/api/workers \
-  -H "Content-Type: application/json" \
-  -d '{"first_name":"John","last_name":"Doe"}'
+1. Fork el proyecto
+2. Crea una rama feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
-# Get all workers
-curl http://localhost:3000/api/workers
-```
+---
 
-### Frontend Testing
-Navigate to `http://localhost:4200` and test UI interactions.
+## 📄 Licencia
 
-## Next Steps (Frontend Implementation)
+ISC
 
-The backend is fully implemented. To complete the Angular frontend:
+---
 
-1. **Install frontend dependencies:**
-   ```bash
-   cd frontend
-   npm install
-   ```
+## 👥 Equipo
 
-2. **Create core services:**
-   - API service for HTTP calls
-   - Model interfaces matching backend
+Workshop Management System Team
 
-3. **Build feature modules:**
-   - Workers module (list, form components)
-   - Jobs module (list, form, advance dialog)
-   - Vacations module (list, form)
-   - Invoices module (list, form, payment dialog)
+---
 
-4. **Add routing:**
-   - Configure app routing module
-   - Add navigation bar component
+## 📞 Soporte
 
-5. **Implement CRUD operations:**
-   - Use Angular Material table for lists
-   - Use Material forms for create/edit
-   - Use Material dialogs for advances/payments
-
-## Support
-
-For issues or questions, refer to:
-- Backend README: `backend/README.md`
-- API documentation above
-- SQL migration files for schema details
-
-## License
-
-MIT
+Para preguntas o problemas, crear un issue en el repositorio.

@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getPool, closePool } from './config/database';
+import prisma from './config/prisma';
 
 // Routes
 import workerRoutes from './routes/worker.routes';
@@ -29,7 +29,7 @@ app.use('/api/invoices', invoiceRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Workshop API is running' });
+    res.json({ status: 'OK', message: 'Workshop API is running with Prisma' });
 });
 
 // Error handling
@@ -41,9 +41,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 // Start server
 const startServer = async () => {
     try {
-        // Test database connection
-        await getPool();
-        console.log('✅ Database connection established');
+        // Test Prisma connection
+        await prisma.$connect();
+        console.log('✅ Connected to database via Prisma');
 
         app.listen(PORT, () => {
             console.log(`🚀 Server is running on http://localhost:${PORT}`);
@@ -58,13 +58,15 @@ const startServer = async () => {
 // Graceful shutdown
 process.on('SIGINT', async () => {
     console.log('\n🛑 Shutting down gracefully...');
-    await closePool();
+    await prisma.$disconnect();
+    console.log('❌ Prisma disconnected');
     process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
     console.log('\n🛑 Shutting down gracefully...');
-    await closePool();
+    await prisma.$disconnect();
+    console.log('❌ Prisma disconnected');
     process.exit(0);
 });
 

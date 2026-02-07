@@ -11,7 +11,7 @@ import { Worker } from '../../core/models/models';
 })
 export class WorkerListComponent implements OnInit {
     workers: Worker[] = [];
-    displayedColumns: string[] = ['id', 'first_name', 'last_name', 'document_number', 'phone', 'email', 'base_salary', 'actions'];
+    displayedColumns: string[] = ['id', 'firstName', 'lastName', 'documentNumber', 'phone', 'email', 'baseSalary', 'actions'];
     loading = false;
 
     constructor(

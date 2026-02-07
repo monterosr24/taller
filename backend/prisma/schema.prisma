@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Advance {
+  id          Int      @id(map: "PK__Advances__3213E83FF9B5C259") @default(autoincrement())
+  jobId       Int      @map("job_id")
+  amount      Decimal  @db.Decimal(18, 2)
+  description String?  @db.NVarChar(200)
+  advanceDate DateTime @map("advance_date") @db.Date
+  createdAt   DateTime? @default(now(), map: "DF__Advances__create__5DCAEF64") @map("created_at")
+  
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK__Advances__job_id__5EBF139D")
+
+  @@index([jobId], map: "IX_Advances_JobId")
+  @@map("Advances")
+}
+
+model InvoicePayment {
+  id            Int      @id(map: "PK__Invoice___3213E83F74C9C2AC") @default(autoincrement())
+  invoiceId     Int      @map("invoice_id")
+  paymentAmount Decimal  @map("payment_amount") @db.Decimal(18, 2)
+  paymentDate   DateTime @map("payment_date") @db.Date
+  paymentMethod String?  @map("payment_method") @db.NVarChar(50)
+  reference     String?  @db.NVarChar(100)
+  notes         String?  @db.NVarChar(200)
+  createdAt     DateTime? @default(now(), map: "DF__Invoice_P__creat__6E01572D") @map("created_at")
+  
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK__Invoice_P__invoi__6EF57B66")
+
+  @@index([invoiceId], map: "IX_InvoicePayments_InvoiceId")
+  @@map("Invoice_Payments")
+}
+
+model Invoice {
+  id              Int               @id(map: "PK__Invoices__3213E83FA01D73DB") @default(autoincrement())
+  invoiceNumber   String            @unique(map: "UQ__Invoices__8081A63AA3C9B95F") @map("invoice_number") @db.NVarChar(50)
+  supplier        String            @db.NVarChar(200)
+  description     String?           @db.NVarChar(500)
+  totalAmount     Decimal           @map("total_amount") @db.Decimal(18, 2)
+  paidAmount      Decimal?          @default(0, map: "DF__Invoices__paid_a__68487DD7") @map("paid_amount") @db.Decimal(18, 2)
+  paymentStatus   String?           @default("pending", map: "DF__Invoices__paymen__693CA210") @map("payment_status") @db.NVarChar(20)
+  invoiceDate     DateTime          @map("invoice_date") @db.Date
+  dueDate         DateTime?         @map("due_date") @db.Date
+  createdAt       DateTime?         @default(now(), map: "DF__Invoices__create__6B24EA82") @map("created_at")
+  updatedAt       DateTime?         @map("updated_at")
+  
+  payments        InvoicePayment[]
+
+  @@map("Invoices")
+}
+
+model Job {
+  id            Int       @id(map: "PK__Jobs__3213E83FBB3978DB") @default(autoincrement())
+  vehicleId     Int       @map("vehicle_id")
+  workerId      Int       @map("worker_id")
+  description   String    @db.NVarChar(500)
+  totalAmount   Decimal   @map("total_amount") @db.Decimal(18, 2)
+  advanceAmount Decimal?  @default(0, map: "DF__Jobs__advance_am__5629CD9C") @map("advance_amount") @db.Decimal(18, 2)
+  status        String?   @default("pending", map: "DF__Jobs__status__571DF1D5") @db.NVarChar(20)
+  startDate     DateTime? @map("start_date") @db.Date
+  endDate       DateTime? @map("end_date") @db.Date
+  createdAt     DateTime? @default(now(), map: "DF__Jobs__created_at__59063A47") @map("created_at")
+  updatedAt     DateTime? @map("updated_at")
+  
+  advances      Advance[]
+  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id], onUpdate: NoAction, map: "FK__Jobs__vehicle_id__59FA5E80")
+  worker        Worker    @relation(fields: [workerId], references: [id], onUpdate: NoAction, map: "FK__Jobs__worker_id__5AEE82B9")
+
+  @@index([vehicleId], map: "IX_Jobs_VehicleId")
+  @@index([workerId], map: "IX_Jobs_WorkerId")
+  @@map("Jobs")
+}
+
+model Migration {
+  id            Int      @id(map: "PK__Migratio__3213E83F892EF628") @default(autoincrement())
+  migrationName String   @unique(map: "UQ__Migratio__29AC81C2B4744562") @map("migration_name") @db.NVarChar(255)
+  executedAt    DateTime? @default(now(), map: "DF__Migration__execu__4AB81AF0") @map("executed_at")
+
+  @@map("Migrations")
+}
+
+model Vacation {
+  id        Int      @id(map: "PK__Vacation__3213E83F405134C4") @default(autoincrement())
+  workerId  Int      @map("worker_id")
+  startDate DateTime @map("start_date") @db.Date
+  endDate   DateTime @map("end_date") @db.Date
+  totalDays Int      @map("total_days")
+  status    String?  @default("requested", map: "DF__Vacations__statu__619B8048") @db.NVarChar(20)
+  notes     String?  @db.NVarChar(500)
+  createdAt DateTime? @default(now(), map: "DF__Vacations__creat__6383C8BA") @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  
+  worker    Worker   @relation(fields: [workerId], references: [id], onUpdate: NoAction, map: "FK__Vacations__worke__6477ECF3")
+
+  @@index([workerId], map: "IX_Vacations_WorkerId")
+  @@map("Vacations")
+}
+
+model Vehicle {
+  id           Int      @id(map: "PK__Vehicles__3213E83F639FA8A2") @default(autoincrement())
+  licensePlate String   @unique(map: "UQ__Vehicles__F72CD56E9B06B6CB") @map("license_plate") @db.NVarChar(20)
+  brand        String?  @db.NVarChar(50)
+  model        String?  @db.NVarChar(50)
+  year         Int?
+  ownerName    String?  @map("owner_name") @db.NVarChar(200)
+  ownerPhone   String?  @map("owner_phone") @db.NVarChar(20)
+  createdAt    DateTime? @default(now(), map: "DF__Vehicles__create__534D60F1") @map("created_at")
+  
+  jobs         Job[]
+
+  @@map("Vehicles")
+}
+
+model Worker {
+  id             Int       @id(map: "PK__Workers__3213E83F78A44101") @default(autoincrement())
+  firstName      String    @map("first_name") @db.NVarChar(100)
+  lastName       String    @map("last_name") @db.NVarChar(100)
+  documentNumber String?   @unique(map: "UQ__Workers__C8FE0D8CD61B47EA") @map("document_number") @db.NVarChar(50)
+  phone          String?   @db.NVarChar(20)
+  email          String?   @db.NVarChar(100)
+  hireDate       DateTime? @map("hire_date") @db.Date
+  baseSalary     Decimal?  @map("base_salary") @db.Decimal(18, 2)
+  isActive       Boolean?  @default(true, map: "DF__Workers__is_acti__4E88ABD4") @map("is_active")
+  createdAt      DateTime? @default(now(), map: "DF__Workers__created__4F7CD00D") @map("created_at")
+  updatedAt      DateTime? @map("updated_at")
+  
+  jobs           Job[]
+  vacations      Vacation[]
+
+  @@map("Workers")
+}

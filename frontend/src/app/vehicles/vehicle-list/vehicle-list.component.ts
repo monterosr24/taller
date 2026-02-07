@@ -5,8 +5,8 @@ import { VehicleService } from '../../core/services/vehicle.service';
 import { Vehicle } from '../../core/models/models';
 
 @Component({
-    selector: 'app-vehicle-list',
-    template: `
+  selector: 'app-vehicle-list',
+  template: `
     <div class="container">
       <div class="header">
         <h2>Vehicles</h2>
@@ -16,9 +16,9 @@ import { Vehicle } from '../../core/models/models';
       </div>
       <mat-card>
         <table mat-table [dataSource]="vehicles" class="mat-elevation-z8">
-          <ng-container matColumnDef="license_plate">
+          <ng-container matColumnDef="licensePlate">
             <th mat-header-cell *matHeaderCellDef>License Plate</th>
-            <td mat-cell *matCellDef="let v">{{v.license_plate}}</td>
+            <td mat-cell *matCellDef="let v">{{v.licensePlate}}</td>
           </ng-container>
           <ng-container matColumnDef="brand">
             <th mat-header-cell *matHeaderCellDef>Brand</th>
@@ -32,9 +32,9 @@ import { Vehicle } from '../../core/models/models';
             <th mat-header-cell *matHeaderCellDef>Year</th>
             <td mat-cell *matCellDef="let v">{{v.year}}</td>
           </ng-container>
-          <ng-container matColumnDef="owner_name">
+          <ng-container matColumnDef="ownerName">
             <th mat-header-cell *matHeaderCellDef>Owner</th>
-            <td mat-cell *matCellDef="let v">{{v.owner_name}}</td>
+            <td mat-cell *matCellDef="let v">{{v.ownerName}}</td>
           </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="mat-column-actions">Actions</th>
@@ -49,24 +49,24 @@ import { Vehicle } from '../../core/models/models';
       </mat-card>
     </div>
   `,
-    styles: ['.container { padding: 20px; } .header { display: flex; justify-content: space-between; margin-bottom: 20px; } table { width: 100%; }']
+  styles: ['.container { padding: 20px; } .header { display: flex; justify-content: space-between; margin-bottom: 20px; } table { width: 100%; }']
 })
 export class VehicleListComponent implements OnInit {
-    vehicles: Vehicle[] = [];
-    displayedColumns = ['license_plate', 'brand', 'model', 'year', 'owner_name', 'actions'];
+  vehicles: Vehicle[] = [];
+  displayedColumns = ['licensePlate', 'brand', 'model', 'year', 'ownerName', 'actions'];
 
-    constructor(public router: Router, private service: VehicleService, private snackBar: MatSnackBar) { }
+  constructor(public router: Router, private service: VehicleService, private snackBar: MatSnackBar) { }
 
-    ngOnInit(): void {
-        this.service.getAll().subscribe(data => this.vehicles = data);
+  ngOnInit(): void {
+    this.service.getAll().subscribe(data => this.vehicles = data);
+  }
+
+  delete(id: number): void {
+    if (confirm('Delete this vehicle?')) {
+      this.service.delete(id).subscribe(() => {
+        this.snackBar.open('Deleted', 'Close', { duration: 2000 });
+        this.ngOnInit();
+      });
     }
-
-    delete(id: number): void {
-        if (confirm('Delete this vehicle?')) {
-            this.service.delete(id).subscribe(() => {
-                this.snackBar.open('Deleted', 'Close', { duration: 2000 });
-                this.ngOnInit();
-            });
-        }
-    }
+  }
 }
