@@ -9,6 +9,7 @@ import vehicleRoutes from './routes/vehicle.routes';
 import jobRoutes from './routes/job.routes';
 import vacationRoutes from './routes/vacation.routes';
 import invoiceRoutes from './routes/invoice.routes';
+import advanceRoutes from './routes/advance.routes';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/vacations', vacationRoutes);
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/advances', advanceRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

@@ -9,6 +9,20 @@ export interface CreateAdvanceDto {
 }
 
 export class AdvanceRepository {
+    /**
+     * Converts Prisma Decimal type to number for arithmetic operations
+     */
+    private toNumber(value: number | Prisma.Decimal): number {
+        return typeof value === 'number' ? value : Number(value);
+    }
+
+    /**
+     * Validates if job is fully paid based on advances
+     */
+    private isJobFullyPaid(totalAmount: number, advanceAmount: number): boolean {
+        return advanceAmount >= totalAmount;
+    }
+
     async findAll(): Promise<Advance[]> {
         return await prisma.advance.findMany({
             include: {
@@ -29,7 +43,12 @@ export class AdvanceRepository {
         return await prisma.advance.findUnique({
             where: { id },
             include: {
-                job: true
+                job: {
+                    include: {
+                        vehicle: true,
+                        worker: true
+                    }
+                }
             }
         });
     }
@@ -45,21 +64,41 @@ export class AdvanceRepository {
 
     async create(data: CreateAdvanceDto): Promise<Advance> {
         return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-            // Create advance
-            const advance = await tx.advance.create({
-                data,
-                include: {
-                    job: true
-                }
+            // Fetch job details
+            const job = await tx.job.findUnique({
+                where: { id: data.jobId },
+                select: { totalAmount: true, advanceAmount: true, status: true }
             });
 
-            // Update job's advance amount
+            if (!job) {
+                throw new Error(`Job with ID ${data.jobId} not found`);
+            }
+
+            // Convert Prisma Decimals to numbers
+            const totalAmount = this.toNumber(job.totalAmount);
+            const currentAdvanceAmount = job.advanceAmount ? this.toNumber(job.advanceAmount) : 0;
+            const newAdvanceAmount = currentAdvanceAmount + data.amount;
+
+            // Validate advance doesn't exceed total
+            if (newAdvanceAmount > totalAmount) {
+                console.warn(`Advance amount ($${newAdvanceAmount}) exceeds job total ($${totalAmount}) for Job #${data.jobId}`);
+            }
+
+            // Create the advance record
+            const advance = await tx.advance.create({
+                data,
+                include: { job: true }
+            });
+
+            // Determine new job status
+            const shouldComplete = this.isJobFullyPaid(totalAmount, newAdvanceAmount);
+
+            // Update job with new advance amount and possibly status
             await tx.job.update({
                 where: { id: data.jobId },
                 data: {
-                    advanceAmount: {
-                        increment: data.amount
-                    }
+                    advanceAmount: newAdvanceAmount,
+                    ...(shouldComplete && { status: 'completed' })
                 }
             });
 

@@ -24,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,6 +43,8 @@ import { VehicleFormComponent } from './vehicles/vehicle-form/vehicle-form.compo
 import { JobListComponent } from './jobs/job-list/job-list.component';
 import { JobFormComponent } from './jobs/job-form/job-form.component';
 import { AdvanceDialogComponent } from './jobs/advance-dialog/advance-dialog.component';
+import { AdvanceListComponent } from './jobs/advance-list/advance-list.component';
+import { AdvanceListDialogComponent } from './jobs/advance-list-dialog/advance-list-dialog.component';
 
 // Vacation components
 import { VacationListComponent } from './vacations/vacation-list/vacation-list.component';
@@ -64,6 +67,8 @@ import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog
         JobListComponent,
         JobFormComponent,
         AdvanceDialogComponent,
+        AdvanceListComponent,
+        AdvanceListDialogComponent,
         VacationListComponent,
         VacationFormComponent,
         InvoiceListComponent,
@@ -96,7 +101,8 @@ import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog
         MatDialogModule,
         MatSnackBarModule,
         MatProgressSpinnerModule,
-        MatChipsModule
+        MatChipsModule,
+        MatDividerModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -56,9 +56,31 @@ export class WorkerRepository {
         });
     }
 
+    async findByIdWithVacationBalance(id: number) {
+        const worker = await prisma.worker.findUnique({
+            where: { id },
+            include: {
+                vacations: {
+                    select: {
+                        id: true,
+                        totalDays: true,
+                        status: true,
+                        startDate: true,
+                        endDate: true
+                    }
+                }
+            }
+        });
+
+        return worker;
+    }
+
     async create(data: CreateWorkerDto): Promise<Worker> {
         return await prisma.worker.create({
-            data
+            data: {
+                ...data,
+                isActive: true
+            }
         });
     }
 
@@ -70,16 +92,10 @@ export class WorkerRepository {
     }
 
     async delete(id: number): Promise<boolean> {
-        try {
-            await prisma.worker.update({
-                where: { id },
-                data: {
-                    isActive: false
-                }
-            });
-            return true;
-        } catch {
-            return false;
-        }
+        const worker = await prisma.worker.update({
+            where: { id },
+            data: { isActive: false }
+        });
+        return !!worker;
     }
 }

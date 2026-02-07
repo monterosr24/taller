@@ -1,0 +1,78 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>
+        <mat-icon>list_alt</mat-icon>
+        Adelantos del Trabajo #{{ job.id }}
+    </h2>
+
+    <mat-dialog-content>
+        <!-- Job summary -->
+        <div class="job-summary">
+            <div class="summary-row">
+                <span class="label">Descripción:</span>
+                <span class="value">{{ job.description }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">Monto Total:</span>
+                <span class="value amount">{{ job.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">Total Adelantado:</span>
+                <span class="value amount warn">{{ job.advanceAmount || 0 | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="summary-row highlight">
+                <span class="label">Saldo Pendiente:</span>
+                <span class="value amount success">{{ balance | currency:'USD':'symbol':'1.2-2' }}</span>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Advances table -->
+        <div *ngIf="loading" class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && advances.length > 0" class="advances-table">
+            <table mat-table [dataSource]="advances" class="mat-elevation-z2">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let advance">{{ advance.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Monto</th>
+                    <td mat-cell *matCellDef="let advance" class="amount-cell">
+                        {{ advance.amount | currency:'USD':'symbol':'1.2-2' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                    <td mat-cell *matCellDef="let advance">{{ advance.description || 'N/A' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="advanceDate">
+                    <th mat-header-cell *matHeaderCellDef>Fecha Adelanto</th>
+                    <td mat-cell *matCellDef="let advance">{{ advance.advanceDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef>Registrado</th>
+                    <td mat-cell *matCellDef="let advance">{{ advance.createdAt | date:'short' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+        <div *ngIf="!loading && advances.length === 0" class="no-data">
+            <mat-icon>info</mat-icon>
+            <p>No hay adelantos registrados para este trabajo</p>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()">Cerrar</button>
+    </mat-dialog-actions>
+</div>

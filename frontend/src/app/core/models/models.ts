@@ -12,6 +12,16 @@ export interface Worker {
     updatedAt?: Date;
 }
 
+export interface VacationBalance {
+    workerId: number;
+    hireDate: Date;
+    monthsWorked: number;
+    accruedDays: number;
+    usedDays: number;
+    pendingDays: number;
+    availableDays: number;
+}
+
 export interface Vehicle {
     id?: number;
     licensePlate: string;

@@ -1,1 +1,101 @@
-<!-- Vacation Form Component HTML  -->
+<div class="vacation-form-container">
+    <h2>Solicitar Vacaciones</h2>
+
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()">
+                <div class="form-grid">
+                    <!-- Worker Selection -->
+                    <mat-form-field class="form-field-full-width">
+                        <mat-label>Trabajador</mat-label>
+                        <mat-select formControlName="workerId" required>
+                            <mat-option *ngFor="let worker of workers" [value]="worker.id">
+                                {{worker.firstName}} {{worker.lastName}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="vacationForm.get('workerId')?.hasError('required')">
+                            Seleccione un trabajador
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Vacation Balance Card -->
+                    <div class="vacation-balance-card" *ngIf="selectedWorkerBalance">
+                        <h3>Balance de Vacaciones</h3>
+                        <div class="balance-grid">
+                            <div class="balance-item">
+                                <span class="label">Meses Trabajados:</span>
+                                <span class="value">{{selectedWorkerBalance.monthsWorked}}</span>
+                            </div>
+                            <div class="balance-item">
+                                <span class="label">Días Acumulados:</span>
+                                <span class="value">{{selectedWorkerBalance.accruedDays}}</span>
+                            </div>
+                            <div class="balance-item">
+                                <span class="label">Días Usados:</span>
+                                <span class="value used">{{selectedWorkerBalance.usedDays}}</span>
+                            </div>
+                            <div class="balance-item">
+                                <span class="label">Días Pendientes:</span>
+                                <span class="value pending">{{selectedWorkerBalance.pendingDays}}</span>
+                            </div>
+                            <div class="balance-item highlight">
+                                <span class="label">Días Disponibles:</span>
+                                <span class="value available">{{selectedWorkerBalance.availableDays}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="loadingBalance" class="loading-balance">
+                        <mat-spinner diameter="30"></mat-spinner>
+                        <span>Cargando balance...</span>
+                    </div>
+
+                    <!-- Days Input -->
+                    <mat-form-field class="form-field-full-width">
+                        <mat-label>Días a Solicitar</mat-label>
+                        <input matInput type="number" formControlName="totalDays" min="1" required>
+                        <mat-hint>Las vacaciones iniciarán desde hoy</mat-hint>
+                        <mat-error *ngIf="vacationForm.get('totalDays')?.hasError('required')">
+                            Ingrese los días a solicitar
+                        </mat-error>
+                        <mat-error *ngIf="vacationForm.get('totalDays')?.hasError('min')">
+                            Debe solicitar al menos 1 día
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Insufficient Balance Warning -->
+                    <div class="warning-message" *ngIf="hasInsufficientBalance">
+                        <mat-icon>warning</mat-icon>
+                        <span>
+                            Saldo insuficiente. Solicitando: {{totalDays}} días, Disponible:
+                            {{selectedWorkerBalance?.availableDays}} días
+                        </span>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div class="success-message"
+                        *ngIf="!hasInsufficientBalance && totalDays > 0 && selectedWorkerBalance">
+                        <mat-icon>check_circle</mat-icon>
+                        <span>
+                            Se aprobarán automáticamente {{totalDays}} días de vacaciones
+                        </span>
+                    </div>
+
+                    <!-- Notes -->
+                    <mat-form-field class="form-field-full-width">
+                        <mat-label>Notas (opcional)</mat-label>
+                        <textarea matInput formControlName="notes" rows="3"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-buttons">
+                    <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="vacationForm.invalid || hasInsufficientBalance">
+                        Aprobar Vacaciones
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

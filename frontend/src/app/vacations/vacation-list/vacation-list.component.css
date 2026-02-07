@@ -1,1 +1,110 @@
-/* Empty CSS file */
+.vacation-list-container {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.worker-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #666;
+}
+
+.days-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-requested {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.status-approved {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-rejected {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-completed {
+    background: #e0f2f1;
+    color: #00695c;
+}
+
+.delete-option {
+    color: #d32f2f;
+}
+
+.no-data {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-data mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #bbb;
+    margin-bottom: 16px;
+}
+
+.no-data p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

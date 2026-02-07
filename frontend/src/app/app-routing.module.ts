@@ -7,6 +7,7 @@ import { VehicleListComponent } from './vehicles/vehicle-list/vehicle-list.compo
 import { VehicleFormComponent } from './vehicles/vehicle-form/vehicle-form.component';
 import { JobListComponent } from './jobs/job-list/job-list.component';
 import { JobFormComponent } from './jobs/job-form/job-form.component';
+import { AdvanceListComponent } from './jobs/advance-list/advance-list.component';
 import { VacationListComponent } from './vacations/vacation-list/vacation-list.component';
 import { VacationFormComponent } from './vacations/vacation-form/vacation-form.component';
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
     { path: 'jobs', component: JobListComponent },
     { path: 'jobs/new', component: JobFormComponent },
     { path: 'jobs/edit/:id', component: JobFormComponent },
+    { path: 'advances', component: AdvanceListComponent },
     { path: 'vacations', component: VacationListComponent },
     { path: 'vacations/new', component: VacationFormComponent },
     { path: 'vacations/edit/:id', component: VacationFormComponent },

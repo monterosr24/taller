@@ -101,6 +101,10 @@
                             <mat-icon>payment</mat-icon>
                             <span>Agregar Adelanto</span>
                         </button>
+                        <button mat-menu-item (click)="viewAdvances(job)">
+                            <mat-icon>list_alt</mat-icon>
+                            <span>Ver Adelantos</span>
+                        </button>
                         <button mat-menu-item (click)="deleteJob(job.id)" class="delete-option">
                             <mat-icon>delete</mat-icon>
                             <span>Eliminar</span>

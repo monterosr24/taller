@@ -7,6 +7,7 @@ import { WorkerService } from '../../core/services/worker.service';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { Job, Worker, Vehicle } from '../../core/models/models';
 import { AdvanceDialogComponent } from '../advance-dialog/advance-dialog.component';
+import { AdvanceListDialogComponent } from '../advance-list-dialog/advance-list-dialog.component';
 
 @Component({
     selector: 'app-job-list',
@@ -130,6 +131,13 @@ export class JobListComponent implements OnInit {
                     }
                 });
             }
+        });
+    }
+
+    viewAdvances(job: Job): void {
+        this.dialog.open(AdvanceListDialogComponent, {
+            width: '700px',
+            data: { job }
         });
     }
 
