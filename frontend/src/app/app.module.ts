@@ -57,6 +57,7 @@ import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.c
 import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 import { DataTableComponent } from './shared/components/data-table/data-table.component';
 import { VacationRequestDialogComponent } from './workers/vacation-request-dialog/vacation-request-dialog.component';
+import { SalaryAdvanceDialogComponent } from './workers/salary-advance-dialog/salary-advance-dialog.component';
 
 @NgModule({
     declarations: [
@@ -78,7 +79,8 @@ import { VacationRequestDialogComponent } from './workers/vacation-request-dialo
         SupplierListComponent,
         SupplierFormComponent,
         DataTableComponent,
-        VacationRequestDialogComponent
+        VacationRequestDialogComponent,
+        SalaryAdvanceDialogComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,117 @@
+<h2 mat-dialog-title>Salary Advance - {{ worker.firstName }} {{ worker.lastName }}</h2>
+
+<mat-dialog-content>
+    <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading information...</p>
+    </div>
+
+    <div *ngIf="!loading && availableInfo" class="content">
+        <!-- Worker Info Card -->
+        <mat-card class="info-card">
+            <mat-card-header>
+                <mat-card-title>Payment Information</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Base Salary:</span>
+                        <span class="value">${{ availableInfo.baseSalary | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Payment Frequency:</span>
+                        <span class="value">{{ getPaymentFrequencyLabel(availableInfo.paymentFrequency) }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Current Period:</span>
+                        <span class="value">
+                            {{ availableInfo.currentPeriodStart | date:'dd/MM/yyyy' }} -
+                            {{ availableInfo.currentPeriodEnd | date:'dd/MM/yyyy' }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Total Advances:</span>
+                        <span class="value warn">${{ availableInfo.totalAdvances | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="info-item highlight">
+                        <span class="label">Available Amount:</span>
+                        <span class="value success">${{ availableInfo.availableAmount | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Create Advance Form -->
+        <mat-card class="advance-form-card" *ngIf="availableInfo.availableAmount > 0">
+            <mat-card-header>
+                <mat-card-title>Request New Advance</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form [formGroup]="advanceForm" (ngSubmit)="onSubmit()">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Amount</mat-label>
+                        <input matInput type="number" step="0.01" formControlName="amount" required>
+                        <span matPrefix>$&nbsp;</span>
+                        <mat-hint>Max: ${{ availableInfo.availableAmount | number:'1.2-2' }}</mat-hint>
+                        <mat-error *ngIf="advanceForm.get('amount')?.hasError('required')">
+                            Amount is required
+                        </mat-error>
+                        <mat-error *ngIf="advanceForm.get('amount')?.hasError('min')">
+                            Amount must be greater than 0
+                        </mat-error>
+                        <mat-error *ngIf="advanceForm.get('amount')?.hasError('max')">
+                            Amount exceeds available limit
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Notes (Optional)</mat-label>
+                        <textarea matInput formControlName="notes" rows="2"></textarea>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="!advanceForm.valid || submitting" class="submit-btn">
+                        <mat-icon *ngIf="!submitting">add</mat-icon>
+                        <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+                        {{ submitting ? 'Creating...' : 'Create Advance' }}
+                    </button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+
+        <div *ngIf="availableInfo.availableAmount <= 0" class="warning-message">
+            <mat-icon>warning</mat-icon>
+            <p>No available amount for advances in the current period</p>
+        </div>
+
+        <!-- Advances List -->
+        <mat-card class="advances-list-card" *ngIf="advances.length > 0">
+            <mat-card-header>
+                <mat-card-title>Advance History</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let advance of advances">
+                        <div class="advance-item">
+                            <div class="advance-info">
+                                <div class="advance-amount">${{ advance.amount | number:'1.2-2' }}</div>
+                                <div class="advance-date">{{ advance.advanceDate | date:'dd/MM/yyyy' }}</div>
+                                <div class="advance-period" *ngIf="advance.notes">
+                                    <small>{{ advance.notes }}</small>
+                                </div>
+                            </div>
+                            <button mat-icon-button color="warn" (click)="deleteAdvance(advance)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>

@@ -7,6 +7,8 @@ export interface Worker {
     email?: string;
     hireDate?: Date;
     baseSalary?: number;
+    paymentFrequency?: 'weekly' | 'biweekly' | 'monthly';
+    workerType?: 'contract' | 'direct';
     isActive?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
@@ -110,4 +112,24 @@ export interface Supplier {
     isActive?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface SalaryAdvance {
+    id?: number;
+    workerId: number;
+    amount: number;
+    advanceDate: Date;
+    paymentPeriodStart: Date;
+    paymentPeriodEnd: Date;
+    notes?: string;
+    createdAt?: Date;
+}
+
+export interface AvailableAdvanceInfo {
+    baseSalary: number;
+    paymentFrequency: string;
+    totalAdvances: number;
+    availableAmount: number;
+    currentPeriodStart: Date;
+    currentPeriodEnd: Date;
 }

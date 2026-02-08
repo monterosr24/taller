@@ -14,7 +14,7 @@ export class WorkerFormComponent implements OnInit {
     workerForm: FormGroup;
     isEditMode = false;
     workerId?: number;
-    loading = false;
+    submitting = false;
 
     constructor(
         private fb: FormBuilder,
@@ -30,7 +30,9 @@ export class WorkerFormComponent implements OnInit {
             phone: [''],
             email: ['', Validators.email],
             hireDate: [''],
-            baseSalary: ['', [Validators.min(0)]]
+            baseSalary: ['', [Validators.min(0)]],
+            paymentFrequency: ['monthly'],
+            workerType: ['direct']
         });
     }
 
@@ -44,23 +46,33 @@ export class WorkerFormComponent implements OnInit {
     }
 
     loadWorker(id: number): void {
-        this.loading = true;
+        this.submitting = true;
         this.workerService.getById(id).subscribe({
             next: (worker) => {
-                this.workerForm.patchValue(worker);
-                this.loading = false;
+                this.workerForm.patchValue({
+                    firstName: worker.firstName,
+                    lastName: worker.lastName,
+                    documentNumber: worker.documentNumber,
+                    phone: worker.phone,
+                    email: worker.email,
+                    hireDate: worker.hireDate ? new Date(worker.hireDate) : null,
+                    baseSalary: worker.baseSalary,
+                    paymentFrequency: worker.paymentFrequency || 'monthly',
+                    workerType: worker.workerType || 'direct'
+                });
+                this.submitting = false;
             },
             error: (error) => {
                 console.error('Error loading worker:', error);
                 this.snackBar.open('Error loading worker', 'Close', { duration: 3000 });
-                this.loading = false;
+                this.submitting = false;
             }
         });
     }
 
     onSubmit(): void {
         if (this.workerForm.valid) {
-            this.loading = true;
+            this.submitting = true;
             const workerData: Worker = this.workerForm.value;
 
             const request = this.isEditMode
@@ -76,13 +88,13 @@ export class WorkerFormComponent implements OnInit {
                 error: (error) => {
                     console.error('Error saving worker:', error);
                     this.snackBar.open('Error saving worker', 'Close', { duration: 3000 });
-                    this.loading = false;
+                    this.submitting = false;
                 }
             });
         }
     }
 
-    cancel(): void {
+    onCancel(): void {
         this.router.navigate(['/workers']);
     }
 }

@@ -6,6 +6,7 @@ import { Worker } from '../../core/models/models';
 import { ColumnConfig, TableAction, TableConfig } from '../../shared/components/data-table/models/table-config.model';
 import { FilterType } from '../../shared/components/data-table/models/filter-config.model';
 import { VacationRequestDialogComponent } from '../vacation-request-dialog/vacation-request-dialog.component';
+import { SalaryAdvanceDialogComponent } from '../salary-advance-dialog/salary-advance-dialog.component';
 
 @Component({
     selector: 'app-worker-list',
@@ -85,6 +86,13 @@ export class WorkerListComponent implements OnInit {
             color: 'accent'
         },
         {
+            label: 'Salary Advance',
+            icon: 'payments',
+            action: (row) => this.openSalaryAdvanceDialog(row),
+            color: 'accent',
+            condition: (row) => row.workerType === 'direct'
+        },
+        {
             label: 'Delete',
             icon: 'delete',
             action: (row) => this.deleteWorker(row.id!),
@@ -138,26 +146,38 @@ export class WorkerListComponent implements OnInit {
 
     requestVacation(workerId: number): void {
         const worker = this.workers.find(w => w.id === workerId);
-        if (!worker) return;
+        if (worker) {
+            const dialogRef = this.dialog.open(VacationRequestDialogComponent, {
+                width: '500px',
+                data: { worker }
+            });
 
-        const dialogRef = this.dialog.open(VacationRequestDialogComponent, {
-            width: '500px',
+            dialogRef.afterClosed().subscribe(() => {
+                this.loadWorkers();
+            });
+        }
+    }
+
+    openSalaryAdvanceDialog(worker: Worker): void {
+        const dialogRef = this.dialog.open(SalaryAdvanceDialogComponent, {
+            width: '600px',
             data: { worker }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                // Vacation was created successfully
-                console.log('Vacation created:', result);
-            }
+        dialogRef.afterClosed().subscribe(() => {
+            // Optionally refresh data if needed
         });
     }
 
-    deleteWorker(id: number): void {
+    deleteWorker(workerId: number): void {
         if (confirm('Are you sure you want to delete this worker?')) {
-            this.workerService.delete(id).subscribe({
-                next: () => this.loadWorkers(),
-                error: (error) => console.error('Error deleting worker:', error)
+            this.workerService.delete(workerId).subscribe({
+                next: () => {
+                    this.loadWorkers();
+                },
+                error: (error) => {
+                    console.error('Error deleting worker:', error);
+                }
             });
         }
     }

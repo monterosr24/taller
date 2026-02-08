@@ -11,6 +11,7 @@ import vacationRoutes from './routes/vacation.routes';
 import invoiceRoutes from './routes/invoice.routes';
 import supplierRoutes from './routes/supplier.routes';
 import advanceRoutes from './routes/advance.routes';
+import salaryAdvanceRoutes from './routes/salary-advance.routes';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use('/api/vacations', vacationRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/advances', advanceRoutes);
+app.use('/api/salary-advances', salaryAdvanceRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
