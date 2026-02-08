@@ -1,0 +1,83 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>Request Vacation</h2>
+
+    <mat-dialog-content>
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-container">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Loading vacation balance...</p>
+        </div>
+
+        <!-- Content -->
+        <div *ngIf="!loading">
+            <!-- Worker Info -->
+            <div class="worker-info">
+                <mat-icon>person</mat-icon>
+                <div class="worker-details">
+                    <strong>{{ data.worker.firstName }} {{ data.worker.lastName }}</strong>
+                    <span class="worker-email">{{ data.worker.email }}</span>
+                </div>
+            </div>
+
+            <!-- Available Days Badge -->
+            <div class="days-badge">
+                <mat-icon>event_available</mat-icon>
+                <span>Available Days: <strong>{{ availableDays }}</strong></span>
+            </div>
+
+            <!-- Vacation Request Form -->
+            <form [formGroup]="vacationForm" (ngSubmit)="onSubmit()">
+                <!-- Number of Days -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Number of Days to Request</mat-label>
+                    <input matInput type="number" formControlName="days" min="1" [max]="availableDays" required>
+                    <mat-hint>You will have {{ remainingDays }} days remaining</mat-hint>
+                    <mat-error *ngIf="vacationForm.get('days')?.hasError('required')">
+                        Number of days is required
+                    </mat-error>
+                    <mat-error *ngIf="vacationForm.get('days')?.hasError('min')">
+                        Must request at least 1 day
+                    </mat-error>
+                    <mat-error *ngIf="vacationForm.get('days')?.hasError('max')">
+                        Exceeds available days ({{ availableDays }})
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Vacation Type -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Vacation Type</mat-label>
+                    <mat-select formControlName="type" required>
+                        <mat-option value="annual">Annual Leave</mat-option>
+                        <mat-option value="sick">Sick Leave</mat-option>
+                        <mat-option value="personal">Personal Leave</mat-option>
+                        <mat-option value="emergency">Emergency Leave</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="vacationForm.get('type')?.hasError('required')">
+                        Vacation type is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Notes (Optional) -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Notes (Optional)</mat-label>
+                    <textarea matInput formControlName="notes" rows="2" placeholder="Additional notes..."></textarea>
+                </mat-form-field>
+
+                <div class="info-message">
+                    <mat-icon>info</mat-icon>
+                    <span>Vacation will start from today and will be automatically approved</span>
+                </div>
+            </form>
+        </div> <!-- End loading conditional -->
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="onCancel()" [disabled]="submitting">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()"
+            [disabled]="!vacationForm.valid || submitting || loading">
+            <mat-icon *ngIf="!submitting">check</mat-icon>
+            <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+            {{ submitting ? 'Submitting...' : 'Submit Request' }}
+        </button>
+    </mat-dialog-actions>
+</div>

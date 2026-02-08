@@ -9,7 +9,7 @@ import { Job, Advance } from '../../core/models/models';
     styleUrls: ['./advance-list-dialog.component.css']
 })
 export class AdvanceListDialogComponent implements OnInit {
-    job: Job;
+    job: Job | null = null;
     advances: Advance[] = [];
     displayedColumns: string[] = ['id', 'amount', 'description', 'advanceDate', 'createdAt'];
     loading = false;
@@ -17,18 +17,32 @@ export class AdvanceListDialogComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<AdvanceListDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { job: Job },
+        @Inject(MAT_DIALOG_DATA) public data: { jobId: number },
         private jobService: JobService
-    ) {
-        this.job = data.job;
-    }
+    ) { }
 
     ngOnInit(): void {
-        this.loadAdvances();
+        this.loadJobAndAdvances();
+    }
+
+    loadJobAndAdvances(): void {
+        this.loading = true;
+        // Load job details first
+        this.jobService.getById(this.data.jobId).subscribe({
+            next: (job) => {
+                this.job = job;
+                this.loadAdvances();
+            },
+            error: (error) => {
+                console.error('Error loading job:', error);
+                this.loading = false;
+            }
+        });
     }
 
     loadAdvances(): void {
-        this.loading = true;
+        if (!this.job) return;
+
         this.jobService.getAdvances(this.job.id!).subscribe({
             next: (advances) => {
                 this.advances = advances;
@@ -47,6 +61,7 @@ export class AdvanceListDialogComponent implements OnInit {
     }
 
     get balance(): number {
+        if (!this.job) return 0;
         return this.job.totalAmount - (this.job.advanceAmount || 0);
     }
 }

@@ -1,0 +1,222 @@
+.data-table-container {
+    width: 100%;
+}
+
+/* Toolbar */
+.table-toolbar {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 4px 4px 0 0;
+}
+
+.search-field {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Loading State */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 16px;
+}
+
+.loading-container p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    overflow-x: auto;
+    background: white;
+}
+
+.data-table {
+    width: 100%;
+}
+
+/* Sticky Header */
+.sticky-header {
+    position: relative;
+}
+
+.sticky-header thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+}
+
+/* Column Cells */
+.selection-cell,
+.row-number-cell,
+.actions-cell {
+    width: 60px;
+    padding: 0 8px !important;
+    text-align: center;
+}
+
+.row-number-cell {
+    color: #999;
+    font-size: 0.875rem;
+}
+
+/* Header Content Layout */
+.header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: fit-content;
+}
+
+.header-text {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Column Filters */
+.column-filter {
+    margin-top: 4px;
+}
+
+.filter-field {
+    width: 100%;
+    font-size: 13px;
+}
+
+::ng-deep .filter-field .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+}
+
+::ng-deep .filter-field .mat-mdc-form-field-flex {
+    padding-top: 0;
+    align-items: center;
+}
+
+::ng-deep .filter-field .mat-mdc-form-field-infix {
+    padding: 6px 0 !important;
+    min-height: 36px !important;
+}
+
+::ng-deep .filter-field input,
+::ng-deep .filter-field .mat-mdc-select {
+    font-size: 13px !important;
+}
+
+::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper,
+::ng-deep .filter-field .mat-mdc-form-field-bottom-align {
+    display: none;
+}
+
+::ng-deep .filter-field .mat-mdc-text-field-wrapper {
+    padding: 0;
+}
+
+::ng-deep .filter-field .mat-mdc-notch-piece {
+    border-width: 1px;
+}
+
+/* Text Alignment */
+.text-left {
+    text-align: left !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+/* Clickable Rows */
+.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable:hover {
+    background-color: #f5f5f5 !important;
+}
+
+/* Selected Row */
+.selected {
+    background-color: #e3f2fd !important;
+}
+
+/* No Data */
+.no-data-row {
+    height: 200px;
+}
+
+.no-data-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #999;
+    padding: 40px 20px;
+}
+
+.no-data-message mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #ccc;
+}
+
+.no-data-message p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Responsive */
+.hide-mobile {
+    display: table-cell;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .search-field {
+        max-width: 100%;
+    }
+
+    .table-toolbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .column-filter {
+        display: none;
+    }
+}
+
+/* Material Overrides */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0;
+}
+
+::ng-deep .mat-paginator {
+    background: #f5f5f5;
+    border-radius: 0 0 4px 4px;
+}
+
+/* Sortable Headers */
+.mat-sort-header-container {
+    justify-content: flex-start;
+}
+
+.mat-sort-header-sorted {
+    color: #1976d2;
+}

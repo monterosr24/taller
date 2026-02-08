@@ -25,6 +25,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,14 +47,12 @@ import { AdvanceDialogComponent } from './jobs/advance-dialog/advance-dialog.com
 import { AdvanceListComponent } from './jobs/advance-list/advance-list.component';
 import { AdvanceListDialogComponent } from './jobs/advance-list-dialog/advance-list-dialog.component';
 
-// Vacation components
-import { VacationListComponent } from './vacations/vacation-list/vacation-list.component';
-import { VacationFormComponent } from './vacations/vacation-form/vacation-form.component';
-
 // Invoice components
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog.component';
+import { DataTableComponent } from './shared/components/data-table/data-table.component';
+import { VacationRequestDialogComponent } from './workers/vacation-request-dialog/vacation-request-dialog.component';
 
 @NgModule({
     declarations: [
@@ -69,11 +68,11 @@ import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog
         AdvanceDialogComponent,
         AdvanceListComponent,
         AdvanceListDialogComponent,
-        VacationListComponent,
-        VacationFormComponent,
         InvoiceListComponent,
         InvoiceFormComponent,
-        PaymentDialogComponent
+        PaymentDialogComponent,
+        DataTableComponent,
+        VacationRequestDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -102,7 +101,8 @@ import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog
         MatSnackBarModule,
         MatProgressSpinnerModule,
         MatChipsModule,
-        MatDividerModule
+        MatDividerModule,
+        MatCheckboxModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -1,0 +1,120 @@
+.dialog-container {
+    min-width: 400px;
+    max-width: 500px;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 16px;
+}
+
+.loading-container p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.worker-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.worker-info mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: #666;
+}
+
+.worker-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.worker-details strong {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.worker-email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.days-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    border-radius: 4px;
+    margin-bottom: 24px;
+}
+
+.days-badge mat-icon {
+    color: #2196f3;
+}
+
+.days-badge span {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.days-badge strong {
+    color: #1976d2;
+    font-size: 1.1rem;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.info-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: #e8f4f8;
+    border-left: 4px solid #2196f3;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.info-message mat-icon {
+    color: #2196f3;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+mat-dialog-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+mat-dialog-actions {
+    padding: 16px 24px;
+    margin: 0;
+}
+
+mat-dialog-actions button {
+    margin-left: 8px;
+}
+
+/* Spinner in button */
+mat-dialog-actions button mat-spinner {
+    display: inline-block;
+    margin-right: 8px;
+}

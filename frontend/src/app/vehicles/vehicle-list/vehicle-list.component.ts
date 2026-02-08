@@ -1,71 +1,119 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { Vehicle } from '../../core/models/models';
+import { ColumnConfig, TableAction, TableConfig } from '../../shared/components/data-table/models/table-config.model';
+import { FilterType } from '../../shared/components/data-table/models/filter-config.model';
 
 @Component({
   selector: 'app-vehicle-list',
-  template: `
-    <div class="container">
-      <div class="header">
-        <h2>Vehicles</h2>
-        <button mat-raised-button color="primary" (click)="router.navigate(['/vehicles/new'])">
-          <mat-icon>add</mat-icon> Add Vehicle
-        </button>
-      </div>
-      <mat-card>
-        <table mat-table [dataSource]="vehicles" class="mat-elevation-z8">
-          <ng-container matColumnDef="licensePlate">
-            <th mat-header-cell *matHeaderCellDef>License Plate</th>
-            <td mat-cell *matCellDef="let v">{{v.licensePlate}}</td>
-          </ng-container>
-          <ng-container matColumnDef="brand">
-            <th mat-header-cell *matHeaderCellDef>Brand</th>
-            <td mat-cell *matCellDef="let v">{{v.brand}}</td>
-          </ng-container>
-          <ng-container matColumnDef="model">
-            <th mat-header-cell *matHeaderCellDef>Model</th>
-            <td mat-cell *matCellDef="let v">{{v.model}}</td>
-          </ng-container>
-          <ng-container matColumnDef="year">
-            <th mat-header-cell *matHeaderCellDef>Year</th>
-            <td mat-cell *matCellDef="let v">{{v.year}}</td>
-          </ng-container>
-          <ng-container matColumnDef="ownerName">
-            <th mat-header-cell *matHeaderCellDef>Owner</th>
-            <td mat-cell *matCellDef="let v">{{v.ownerName}}</td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="mat-column-actions">Actions</th>
-            <td mat-cell *matCellDef="let v" class="mat-column-actions">
-              <button mat-icon-button color="primary" (click)="router.navigate(['/vehicles/edit', v.id])"><mat-icon>edit</mat-icon></button>
-              <button mat-icon-button color="warn" (click)="delete(v.id)"><mat-icon>delete</mat-icon></button>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </mat-card>
-    </div>
-  `,
-  styles: ['.container { padding: 20px; } .header { display: flex; justify-content: space-between; margin-bottom: 20px; } table { width: 100%; }']
+  templateUrl: './vehicle-list.component.html',
+  styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[] = [];
-  displayedColumns = ['licensePlate', 'brand', 'model', 'year', 'ownerName', 'actions'];
+  loading = false;
 
-  constructor(public router: Router, private service: VehicleService, private snackBar: MatSnackBar) { }
+  columns: ColumnConfig<Vehicle>[] = [
+    {
+      key: 'licensePlate',
+      header: 'License Plate',
+      sortable: true,
+      filter: {
+        type: FilterType.TEXT,
+        placeholder: 'Search license plate...'
+      }
+    },
+    {
+      key: 'brand',
+      header: 'Brand',
+      sortable: true,
+      filter: {
+        type: FilterType.TEXT,
+        placeholder: 'Search brand...'
+      }
+    },
+    {
+      key: 'model',
+      header: 'Model',
+      sortable: true,
+      filter: {
+        type: FilterType.TEXT,
+        placeholder: 'Search model...'
+      }
+    },
+    {
+      key: 'year',
+      header: 'Year',
+      sortable: true,
+      align: 'center',
+      hideOnMobile: true
+    }
+  ];
+
+  actions: TableAction<Vehicle>[] = [
+    {
+      label: 'Edit',
+      icon: 'edit',
+      action: (row) => this.editVehicle(row.id!),
+      color: 'primary'
+    },
+    {
+      label: 'Delete',
+      icon: 'delete',
+      action: (row) => this.deleteVehicle(row.id!),
+      color: 'warn'
+    }
+  ];
+
+  tableConfig: TableConfig = {
+    enableSearch: false, // Using column filters instead
+    enablePagination: true,
+    pageSizeOptions: [10, 25, 50, 100],
+    defaultPageSize: 10,
+    enableRowClick: false,
+    stickyHeader: true,
+    enableColumnFilters: true,
+    emptyMessage: 'No vehicles registered',
+    loadingMessage: 'Loading vehicles...'
+  };
+
+  constructor(
+    private vehicleService: VehicleService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.service.getAll().subscribe(data => this.vehicles = data);
+    this.loadVehicles();
   }
 
-  delete(id: number): void {
-    if (confirm('Delete this vehicle?')) {
-      this.service.delete(id).subscribe(() => {
-        this.snackBar.open('Deleted', 'Close', { duration: 2000 });
-        this.ngOnInit();
+  loadVehicles(): void {
+    this.loading = true;
+    this.vehicleService.getAll().subscribe({
+      next: (data) => {
+        this.vehicles = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading vehicles:', error);
+        this.loading = false;
+      }
+    });
+  }
+
+  createVehicle(): void {
+    this.router.navigate(['/vehicles/new']);
+  }
+
+  editVehicle(id: number): void {
+    this.router.navigate(['/vehicles/edit', id]);
+  }
+
+  deleteVehicle(id: number): void {
+    if (confirm('Are you sure you want to delete this vehicle?')) {
+      this.vehicleService.delete(id).subscribe({
+        next: () => this.loadVehicles(),
+        error: (error) => console.error('Error deleting vehicle:', error)
       });
     }
   }

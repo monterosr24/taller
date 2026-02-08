@@ -1,1 +1,13 @@
-<!-- Vehicle List Component HTML -->
+<div class="vehicle-list-container">
+    <div class="header">
+        <h2>Vehicles</h2>
+        <button mat-raised-button color="primary" (click)="createVehicle()">
+            <mat-icon>add</mat-icon>
+            New Vehicle
+        </button>
+    </div>
+
+    <app-data-table [data]="vehicles" [columns]="columns" [actions]="actions" [config]="tableConfig"
+        [loading]="loading">
+    </app-data-table>
+</div>

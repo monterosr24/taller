@@ -88,9 +88,8 @@ model Migration {
 model Vacation {
   id        Int      @id(map: "PK__Vacation__3213E83F405134C4") @default(autoincrement())
   workerId  Int      @map("worker_id")
-  startDate DateTime @map("start_date") @db.Date
-  endDate   DateTime @map("end_date") @db.Date
   totalDays Int      @map("total_days")
+  type      String?  @db.NVarChar(50)
   status    String?  @default("requested", map: "DF__Vacations__statu__619B8048") @db.NVarChar(20)
   notes     String?  @db.NVarChar(500)
   createdAt DateTime? @default(now(), map: "DF__Vacations__creat__6383C8BA") @map("created_at")

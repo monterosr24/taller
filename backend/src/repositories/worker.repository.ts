@@ -56,7 +56,7 @@ export class WorkerRepository {
         });
     }
 
-    async findByIdWithVacationBalance(id: number) {
+    async findByIdWithVacationBalance(id: number): Promise<(Worker & { vacations: { id: number; totalDays: number; status: string | null; type: string | null }[] }) | null> {
         const worker = await prisma.worker.findUnique({
             where: { id },
             include: {
@@ -65,8 +65,7 @@ export class WorkerRepository {
                         id: true,
                         totalDays: true,
                         status: true,
-                        startDate: true,
-                        endDate: true
+                        type: true
                     }
                 }
             }

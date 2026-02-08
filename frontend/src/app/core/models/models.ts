@@ -63,14 +63,13 @@ export interface Advance {
 export interface Vacation {
     id?: number;
     workerId: number;
-    startDate: Date;
-    endDate: Date;
+    workerName?: string;
     totalDays: number;
-    status?: 'requested' | 'approved' | 'rejected' | 'completed';
+    type?: string;
     notes?: string;
+    status: string;
     createdAt?: Date;
     updatedAt?: Date;
-    workerName?: string;
 }
 
 export interface Invoice {

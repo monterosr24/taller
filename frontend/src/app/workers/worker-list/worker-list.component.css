@@ -1,20 +1,16 @@
 .worker-list-container {
-    padding: 20px;
+    padding: 24px;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
-.loading {
-    display: flex;
-    justify-content: center;
-    padding: 40px;
-}
-
-table {
-    width: 100%;
+.header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
 }

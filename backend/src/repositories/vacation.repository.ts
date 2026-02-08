@@ -25,7 +25,7 @@ export class VacationRepository {
                 worker: true
             },
             orderBy: {
-                startDate: 'desc'
+                createdAt: 'desc'
             }
         });
     }
@@ -46,7 +46,7 @@ export class VacationRepository {
                 worker: true
             },
             orderBy: {
-                startDate: 'desc'
+                createdAt: 'desc'
             }
         });
     }

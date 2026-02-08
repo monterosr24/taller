@@ -1,7 +1,7 @@
 <div class="dialog-container">
     <h2 mat-dialog-title>
         <mat-icon>list_alt</mat-icon>
-        Adelantos del Trabajo #{{ job.id }}
+        Adelantos del Trabajo #{{ job?.id }}
     </h2>
 
     <mat-dialog-content>
@@ -9,15 +9,15 @@
         <div class="job-summary">
             <div class="summary-row">
                 <span class="label">Descripción:</span>
-                <span class="value">{{ job.description }}</span>
+                <span class="value">{{ job?.description }}</span>
             </div>
             <div class="summary-row">
                 <span class="label">Monto Total:</span>
-                <span class="value amount">{{ job.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+                <span class="value amount">{{ job?.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
             </div>
             <div class="summary-row">
                 <span class="label">Total Adelantado:</span>
-                <span class="value amount warn">{{ job.advanceAmount || 0 | currency:'USD':'symbol':'1.2-2' }}</span>
+                <span class="value amount warn">{{ job?.advanceAmount || 0 | currency:'USD':'symbol':'1.2-2' }}</span>
             </div>
             <div class="summary-row highlight">
                 <span class="label">Saldo Pendiente:</span>

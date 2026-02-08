@@ -1,0 +1,25 @@
+<!-- Filter Row Template -->
+<!-- Selection Column Filter -->
+<ng-container matColumnDef="select-filter">
+    <th mat-header-cell *matHeaderCellDef class="selection-cell filter-cell"></th>
+</ng-container>
+
+<!-- Row Number Column Filter -->
+<ng-container matColumnDef="rowNumber-filter">
+    <th mat-header-cell *matHeaderCellDef class="row-number-cell filter-cell"></th>
+</ng-container>
+
+<!-- Data Column Filters -->
+<ng-container *ngFor="let column of columns" [matColumnDef]="column.key.toString() + '-filter'">
+    <th mat-header-cell *matHeaderCellDef class="filter-cell" [ngClass]="getColumnCssClass(column)">
+        <mat-form-field class="filter-input" appearance="outline" *ngIf="column.filterable !== false">
+            <input matInput [placeholder]="'Filter ' + column.header"
+                (keyup)="applyColumnFilter(column.key.toString(), $any($event.target).value)" autocomplete="off">
+        </mat-form-field>
+    </th>
+</ng-container>
+
+<!-- Actions Column Filter -->
+<ng-container matColumnDef="actions-filter">
+    <th mat-header-cell *matHeaderCellDef class="actions-cell filter-cell"></th>
+</ng-container>
