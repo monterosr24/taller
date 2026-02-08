@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Invoice, InvoicePayment } from '../models/models';
+import { Invoice } from '../models/models';
 
 @Injectable({
     providedIn: 'root'
@@ -29,13 +29,5 @@ export class InvoiceService {
 
     delete(id: number): Observable<void> {
         return this.api.delete<void>(`${this.endpoint}/${id}`);
-    }
-
-    getPayments(invoiceId: number): Observable<InvoicePayment[]> {
-        return this.api.get<InvoicePayment[]>(`${this.endpoint}/${invoiceId}/payments`);
-    }
-
-    addPayment(invoiceId: number, payment: InvoicePayment): Observable<InvoicePayment> {
-        return this.api.post<InvoicePayment>(`${this.endpoint}/${invoiceId}/payments`, payment);
     }
 }

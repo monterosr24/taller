@@ -75,12 +75,13 @@ export interface Vacation {
 export interface Invoice {
     id?: number;
     invoiceNumber: string;
-    supplier: string;
+    supplierId: number;
+    supplierName?: string; // For display purposes
     description?: string;
     totalAmount: number;
     paidAmount?: number;
     pendingAmount?: number;
-    paymentStatus?: 'pending' | 'partial' | 'paid';
+    paymentStatus?: 'pending' | 'partial' | 'paid' | 'cancelled';
     invoiceDate: Date;
     dueDate?: Date;
     createdAt?: Date;
@@ -96,4 +97,17 @@ export interface InvoicePayment {
     reference?: string;
     notes?: string;
     createdAt?: Date;
+}
+
+export interface Supplier {
+    id?: number;
+    name: string;
+    contactName?: string;
+    phone?: string;
+    email?: string;
+    address?: string;
+    notes?: string;
+    isActive?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

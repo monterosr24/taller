@@ -51,6 +51,10 @@ import { AdvanceListDialogComponent } from './jobs/advance-list-dialog/advance-l
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog.component';
+
+// Supplier components
+import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.component';
+import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 import { DataTableComponent } from './shared/components/data-table/data-table.component';
 import { VacationRequestDialogComponent } from './workers/vacation-request-dialog/vacation-request-dialog.component';
 
@@ -71,6 +75,8 @@ import { VacationRequestDialogComponent } from './workers/vacation-request-dialo
         InvoiceListComponent,
         InvoiceFormComponent,
         PaymentDialogComponent,
+        SupplierListComponent,
+        SupplierFormComponent,
         DataTableComponent,
         VacationRequestDialogComponent
     ],

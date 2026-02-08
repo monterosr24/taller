@@ -1,12 +1,12 @@
 <div class="container">
     <div class="header">
-        <h2>Invoices</h2>
+        <h2>Suppliers</h2>
         <button mat-raised-button color="primary" (click)="onCreate()">
             <mat-icon>add</mat-icon>
-            Add Invoice
+            Add Supplier
         </button>
     </div>
 
-    <app-data-table [data]="invoices" [columns]="columns" [actions]="actions" [config]="tableConfig">
+    <app-data-table [data]="suppliers" [columns]="columns" [actions]="actions" [config]="tableConfig">
     </app-data-table>
 </div>

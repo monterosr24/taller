@@ -4,11 +4,12 @@ import dotenv from 'dotenv';
 import prisma from './config/prisma';
 
 // Routes
+import jobRoutes from './routes/job.routes';
 import workerRoutes from './routes/worker.routes';
 import vehicleRoutes from './routes/vehicle.routes';
-import jobRoutes from './routes/job.routes';
 import vacationRoutes from './routes/vacation.routes';
 import invoiceRoutes from './routes/invoice.routes';
+import supplierRoutes from './routes/supplier.routes';
 import advanceRoutes from './routes/advance.routes';
 
 dotenv.config();
@@ -22,11 +23,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use('/api/jobs', jobRoutes);
 app.use('/api/workers', workerRoutes);
 app.use('/api/vehicles', vehicleRoutes);
-app.use('/api/jobs', jobRoutes);
 app.use('/api/vacations', vacationRoutes);
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/suppliers', supplierRoutes);
 app.use('/api/advances', advanceRoutes);
 
 // Health check

@@ -7,7 +7,7 @@ export enum PaymentStatus {
 export interface Invoice {
     id?: number;
     invoice_number: string;
-    supplier: string;
+    supplier_id: number;
     description?: string;
     total_amount: number;
     paid_amount?: number;
@@ -21,7 +21,7 @@ export interface Invoice {
 
 export interface CreateInvoiceDto {
     invoice_number: string;
-    supplier: string;
+    supplier_id: number;
     description?: string;
     total_amount: number;
     invoice_date: Date;
@@ -30,7 +30,7 @@ export interface CreateInvoiceDto {
 
 export interface UpdateInvoiceDto {
     invoice_number?: string;
-    supplier?: string;
+    supplier_id?: number;
     description?: string;
     total_amount?: number;
     invoice_date?: Date;

@@ -3,7 +3,7 @@ import { Invoice } from '@prisma/client';
 
 export interface CreateInvoiceDto {
     invoiceNumber: string;
-    supplier: string;
+    supplierId: number;
     description?: string;
     totalAmount: number;
     invoiceDate: Date;
@@ -12,7 +12,7 @@ export interface CreateInvoiceDto {
 
 export interface UpdateInvoiceDto {
     invoiceNumber?: string;
-    supplier?: string;
+    supplierId?: number;
     description?: string;
     totalAmount?: number;
     paymentStatus?: string;
@@ -24,6 +24,7 @@ export class InvoiceRepository {
     async findAll(): Promise<Invoice[]> {
         return await prisma.invoice.findMany({
             include: {
+                supplier: true,
                 payments: {
                     orderBy: {
                         paymentDate: 'desc'
@@ -40,6 +41,7 @@ export class InvoiceRepository {
         return await prisma.invoice.findUnique({
             where: { id },
             include: {
+                supplier: true,
                 payments: {
                     orderBy: {
                         paymentDate: 'desc'
@@ -53,6 +55,7 @@ export class InvoiceRepository {
         return await prisma.invoice.findUnique({
             where: { invoiceNumber },
             include: {
+                supplier: true,
                 payments: true
             }
         });
@@ -76,6 +79,7 @@ export class InvoiceRepository {
             where: { id },
             data,
             include: {
+                supplier: true,
                 payments: true
             }
         });

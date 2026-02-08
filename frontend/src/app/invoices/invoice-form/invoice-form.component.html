@@ -1,1 +1,84 @@
-<!-- Invoice Form Component HTML -->
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{ isEditMode ? 'Edit Invoice' : 'New Invoice' }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+                <!-- Invoice Number -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Invoice Number</mat-label>
+                    <input matInput formControlName="invoiceNumber" required>
+                    <mat-error *ngIf="invoiceForm.get('invoiceNumber')?.hasError('required')">
+                        Invoice number is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Supplier Selector -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select formControlName="supplierId" required>
+                        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            {{ supplier.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="invoiceForm.get('supplierId')?.hasError('required')">
+                        Supplier is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Description -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" rows="3"></textarea>
+                </mat-form-field>
+
+                <!-- Total Amount -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Total Amount</mat-label>
+                    <input matInput type="number" step="0.01" formControlName="totalAmount" required>
+                    <span matPrefix>$&nbsp;</span>
+                    <mat-error *ngIf="invoiceForm.get('totalAmount')?.hasError('required')">
+                        Amount is required
+                    </mat-error>
+                    <mat-error *ngIf="invoiceForm.get('totalAmount')?.hasError('min')">
+                        Amount must be greater than 0
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Invoice Date -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Invoice Date</mat-label>
+                    <input matInput [matDatepicker]="invoicePicker" formControlName="invoiceDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="invoicePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #invoicePicker></mat-datepicker>
+                    <mat-error *ngIf="invoiceForm.get('invoiceDate')?.hasError('required')">
+                        Invoice date is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Due Date -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="duePicker" formControlName="dueDate">
+                    <mat-datepicker-toggle matSuffix [for]="duePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #duePicker></mat-datepicker>
+                </mat-form-field>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <button mat-button type="button" (click)="onCancel()" [disabled]="submitting">
+                        Cancel
+                    </button>
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="!invoiceForm.valid || submitting">
+                        <mat-icon *ngIf="!submitting">save</mat-icon>
+                        <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+                        {{ submitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create') }}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
