@@ -71,3 +71,6 @@ coverage/
 # Package manager locks (opcional - descomentar si quieres ignorar)
 # package-lock.json
 # yarn.lock
+
+# Uploads
+uploads/

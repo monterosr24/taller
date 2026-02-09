@@ -35,6 +35,8 @@ import { HomeComponent } from './home/home.component';
 // Worker components
 import { WorkerListComponent } from './workers/worker-list/worker-list.component';
 import { WorkerFormComponent } from './workers/worker-form/worker-form.component';
+import { VacationRequestDialogComponent } from './workers/vacation-request-dialog/vacation-request-dialog.component';
+import { SalaryAdvanceDialogComponent } from './workers/salary-advance-dialog/salary-advance-dialog.component';
 
 // Vehicle components
 import { VehicleListComponent } from './vehicles/vehicle-list/vehicle-list.component';
@@ -56,8 +58,11 @@ import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog
 import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.component';
 import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 import { DataTableComponent } from './shared/components/data-table/data-table.component';
-import { VacationRequestDialogComponent } from './workers/vacation-request-dialog/vacation-request-dialog.component';
-import { SalaryAdvanceDialogComponent } from './workers/salary-advance-dialog/salary-advance-dialog.component';
+// Template components
+import { TemplateManagerComponent } from './suppliers/template-manager/template-manager.component';
+import { TemplateEditorComponent } from './suppliers/template-editor/template-editor.component';
+
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [
@@ -80,7 +85,9 @@ import { SalaryAdvanceDialogComponent } from './workers/salary-advance-dialog/sa
         SupplierFormComponent,
         DataTableComponent,
         VacationRequestDialogComponent,
-        SalaryAdvanceDialogComponent
+        SalaryAdvanceDialogComponent,
+        TemplateManagerComponent,
+        TemplateEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -110,7 +117,8 @@ import { SalaryAdvanceDialogComponent } from './workers/salary-advance-dialog/sa
         MatProgressSpinnerModule,
         MatChipsModule,
         MatDividerModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatTabsModule
     ],
     providers: [],
     bootstrap: [AppComponent]

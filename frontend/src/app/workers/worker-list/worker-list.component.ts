@@ -16,6 +16,7 @@ import { SalaryAdvanceDialogComponent } from '../salary-advance-dialog/salary-ad
 export class WorkerListComponent implements OnInit {
     workers: Worker[] = [];
     loading = false;
+    // forced refresh
 
     columns: ColumnConfig<Worker>[] = [
         {

@@ -5,62 +5,72 @@
         </mat-card-header>
 
         <mat-card-content>
-            <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
-                <!-- Supplier Name -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Supplier Name</mat-label>
-                    <input matInput formControlName="name" required>
-                    <mat-error *ngIf="supplierForm.get('name')?.hasError('required')">
-                        Supplier name is required
-                    </mat-error>
-                </mat-form-field>
+            <mat-tab-group>
+                <mat-tab label="Details">
+                    <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+                        <!-- Supplier Name -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Supplier Name</mat-label>
+                            <input matInput formControlName="name" required>
+                            <mat-error *ngIf="supplierForm.get('name')?.hasError('required')">
+                                Supplier name is required
+                            </mat-error>
+                        </mat-form-field>
 
-                <!-- Contact Person -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Contact Person</mat-label>
-                    <input matInput formControlName="contactName">
-                </mat-form-field>
+                        <!-- Contact Person -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Contact Person</mat-label>
+                            <input matInput formControlName="contactName">
+                        </mat-form-field>
 
-                <!-- Phone -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone">
-                </mat-form-field>
+                        <!-- Phone -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Phone</mat-label>
+                            <input matInput formControlName="phone">
+                        </mat-form-field>
 
-                <!-- Email -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput type="email" formControlName="email">
-                    <mat-error *ngIf="supplierForm.get('email')?.hasError('email')">
-                        Please enter a valid email
-                    </mat-error>
-                </mat-form-field>
+                        <!-- Email -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" formControlName="email">
+                            <mat-error *ngIf="supplierForm.get('email')?.hasError('email')">
+                                Please enter a valid email
+                            </mat-error>
+                        </mat-form-field>
 
-                <!-- Address -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Address</mat-label>
-                    <textarea matInput formControlName="address" rows="2"></textarea>
-                </mat-form-field>
+                        <!-- Address -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Address</mat-label>
+                            <textarea matInput formControlName="address" rows="2"></textarea>
+                        </mat-form-field>
 
-                <!-- Notes -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Notes</mat-label>
-                    <textarea matInput formControlName="notes" rows="3"></textarea>
-                </mat-form-field>
+                        <!-- Notes -->
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Notes</mat-label>
+                            <textarea matInput formControlName="notes" rows="3"></textarea>
+                        </mat-form-field>
 
-                <!-- Actions -->
-                <div class="form-actions">
-                    <button mat-button type="button" (click)="onCancel()" [disabled]="submitting">
-                        Cancel
-                    </button>
-                    <button mat-raised-button color="primary" type="submit"
-                        [disabled]="!supplierForm.valid || submitting">
-                        <mat-icon *ngIf="!submitting">save</mat-icon>
-                        <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
-                        {{ submitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create') }}
-                    </button>
-                </div>
-            </form>
+                        <!-- Actions -->
+                        <div class="form-actions">
+                            <button mat-button type="button" (click)="onCancel()" [disabled]="submitting">
+                                Cancel
+                            </button>
+                            <button mat-raised-button color="primary" type="submit"
+                                [disabled]="!supplierForm.valid || submitting">
+                                <mat-icon *ngIf="!submitting">save</mat-icon>
+                                <mat-spinner *ngIf="submitting" diameter="20"></mat-spinner>
+                                {{ submitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create') }}
+                            </button>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab label="Invoice Templates" *ngIf="isEditMode">
+                    <div class="tab-content">
+                        <app-template-manager [supplierId]="supplierId!"></app-template-manager>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
         </mat-card-content>
     </mat-card>
 </div>
