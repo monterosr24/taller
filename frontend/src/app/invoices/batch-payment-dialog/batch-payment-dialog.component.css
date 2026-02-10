@@ -3,41 +3,51 @@
 }
 
 .warning-box {
-    background-color: #fff3e0;
-    border: 1px solid #ffb74d;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #fff7ed;
+    border: 1px solid #ffedd5;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    color: #e65100;
+    gap: 12px;
+    margin-bottom: 20px;
+    color: #c2410c;
+    font-weight: 500;
 }
 
 .info-box {
-    background-color: #e3f2fd;
-    border: 1px solid #90caf9;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    color: #1565c0;
+    gap: 12px;
+    margin-bottom: 20px;
+    color: #1d4ed8;
+    font-weight: 500;
 }
 
 .invoice-list {
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 8px 0;
+    margin-bottom: 20px;
+    background-color: #ffffff;
 }
 
 .invoice-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.invoice-item:hover {
+    background-color: #f9fafb;
 }
 
 .invoice-item:last-child {
@@ -45,29 +55,33 @@
 }
 
 .invoice-number {
-    font-weight: 500;
+    font-weight: 600;
     margin-right: 15px;
     display: inline-block;
-    width: 100px;
+    width: 110px;
+    color: var(--text-primary);
 }
 
 .invoice-supplier {
-    color: #666;
+    color: var(--text-secondary);
     margin-right: 15px;
+    flex: 1;
 }
 
 .invoice-amount {
-    font-weight: bold;
-    float: right;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .total-section {
     text-align: right;
-    border-top: 2px solid #e0e0e0;
-    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    margin-top: 20px;
 }
 
 .total-amount {
-    color: #2e7d32;
-    font-size: 1.2em;
+    color: var(--success-color);
+    font-size: 1.5rem;
+    font-weight: 700;
 }

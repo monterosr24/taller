@@ -1,27 +1,28 @@
-<mat-toolbar color="primary">
-    <span routerLink="/" style="cursor: pointer;">
-        <mat-icon>build</mat-icon>
-        Workshop Management
-    </span>
+<mat-toolbar class="main-navbar">
+    <div class="logo-container" routerLink="/" style="cursor: pointer;">
+        <div class="logo-icon">
+            <mat-icon>build_circle</mat-icon>
+        </div>
+        <span class="logo-text">Workshop<span class="logo-highlight">Manager</span></span>
+    </div>
+
     <span class="spacer"></span>
-    <button mat-button routerLink="/workers">
-        <mat-icon>people</mat-icon>
-        Workers
-    </button>
-    <button mat-button routerLink="/suppliers">
-        <mat-icon>business</mat-icon>
-        Suppliers
-    </button>
-    <button mat-button routerLink="/vehicles">
-        <mat-icon>directions_car</mat-icon>
-        Vehicles
-    </button>
-    <button mat-button routerLink="/jobs">
-        <mat-icon>work</mat-icon>
-        Jobs
-    </button>
-    <button mat-button routerLink="/invoices">
-        <mat-icon>receipt</mat-icon>
-        Invoices
-    </button>
+
+    <div class="nav-links">
+        <a mat-button routerLink="/workers" routerLinkActive="active-link">
+            <mat-icon>people</mat-icon> Workers
+        </a>
+        <a mat-button routerLink="/suppliers" routerLinkActive="active-link">
+            <mat-icon>business</mat-icon> Suppliers
+        </a>
+        <a mat-button routerLink="/vehicles" routerLinkActive="active-link">
+            <mat-icon>directions_car</mat-icon> Vehicles
+        </a>
+        <a mat-button routerLink="/jobs" routerLinkActive="active-link">
+            <mat-icon>work</mat-icon> Jobs
+        </a>
+        <a mat-button routerLink="/invoices" routerLinkActive="active-link">
+            <mat-icon>receipt</mat-icon> Invoices
+        </a>
+    </div>
 </mat-toolbar>

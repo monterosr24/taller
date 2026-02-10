@@ -14,7 +14,6 @@ import { BatchPaymentDialogComponent } from '../batch-payment-dialog/batch-payme
 })
 export class InvoiceListComponent implements OnInit {
     invoices: Invoice[] = [];
-    allInvoices: Invoice[] = []; // Store full list
     columns: ColumnConfig[] = [];
     tableConfig: TableConfig = {};
     actions: TableAction<Invoice>[] = [];
@@ -137,29 +136,15 @@ export class InvoiceListComponent implements OnInit {
         this.invoiceService.getAll().subscribe({
             next: (data) => {
                 // Map supplier.name and store
-                this.allInvoices = data.map((invoice: any) => ({
+                this.invoices = data.map((invoice: any) => ({
                     ...invoice,
                     supplierName: invoice.supplier?.name || 'N/A'
                 }));
-                this.applyFilter();
             },
             error: (error) => {
                 console.error('Error loading invoices:', error);
             }
         });
-    }
-
-    applyFilter(): void {
-        if (this.showAll) {
-            this.invoices = [...this.allInvoices];
-        } else {
-            this.invoices = this.allInvoices.filter(inv => inv.paymentStatus !== 'paid' && inv.paymentStatus !== 'cancelled');
-        }
-    }
-
-    toggleShowAll(): void {
-        this.showAll = !this.showAll;
-        this.applyFilter();
     }
 
     onCreate(): void {
