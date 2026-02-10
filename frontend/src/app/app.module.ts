@@ -52,6 +52,7 @@ import { AdvanceListDialogComponent } from './jobs/advance-list-dialog/advance-l
 // Invoice components
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
+// InvoiceUploadComponent removed
 import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog.component';
 
 // Supplier components
@@ -59,8 +60,7 @@ import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.c
 import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 import { DataTableComponent } from './shared/components/data-table/data-table.component';
 // Template components
-import { TemplateManagerComponent } from './suppliers/template-manager/template-manager.component';
-import { TemplateEditorComponent } from './suppliers/template-editor/template-editor.component';
+// Template components removed
 
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -80,14 +80,14 @@ import { MatTabsModule } from '@angular/material/tabs';
         AdvanceListDialogComponent,
         InvoiceListComponent,
         InvoiceFormComponent,
+        // InvoiceUploadComponent removed
         PaymentDialogComponent,
         SupplierListComponent,
         SupplierFormComponent,
         DataTableComponent,
         VacationRequestDialogComponent,
         SalaryAdvanceDialogComponent,
-        TemplateManagerComponent,
-        TemplateEditorComponent
+        // Template components removed
     ],
     imports: [
         BrowserModule,

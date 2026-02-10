@@ -12,7 +12,7 @@ import invoiceRoutes from './routes/invoice.routes';
 import supplierRoutes from './routes/supplier.routes';
 import advanceRoutes from './routes/advance.routes';
 import salaryAdvanceRoutes from './routes/salary-advance.routes';
-import invoiceAutomationRoutes from './invoice-automation/routes/invoice-automation.routes';
+// Import removed
 
 dotenv.config();
 
@@ -33,7 +33,7 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/advances', advanceRoutes);
 app.use('/api/salary-advances', salaryAdvanceRoutes);
-app.use('/api/invoice-automation', invoiceAutomationRoutes); // Registered new routes
+// Routes removed
 
 // Health check
 app.get('/health', (req, res) => {

@@ -10,6 +10,7 @@ import { JobFormComponent } from './jobs/job-form/job-form.component';
 import { AdvanceListComponent } from './jobs/advance-list/advance-list.component';
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
+// Import removed
 import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.component';
 import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 
@@ -27,6 +28,7 @@ const routes: Routes = [
     { path: 'advances', component: AdvanceListComponent },
     { path: 'invoices', component: InvoiceListComponent },
     { path: 'invoices/new', component: InvoiceFormComponent },
+    // Route removed
     { path: 'invoices/edit/:id', component: InvoiceFormComponent },
     { path: 'suppliers', component: SupplierListComponent },
     { path: 'suppliers/new', component: SupplierFormComponent },
