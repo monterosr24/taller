@@ -11,7 +11,7 @@ import { FilterType } from './models/filter-config.model';
     styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent<T = any> implements OnInit {
-    // Inputs
+    // Inputs (touched for recompile)
     @Input() data: T[] = [];
     @Input() columns: ColumnConfig<T>[] = [];
     @Input() actions: TableAction<T>[] = [];

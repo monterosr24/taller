@@ -1,6 +1,13 @@
 <div class="container">
     <div class="header">
         <h2>Invoices</h2>
+        <mat-checkbox [(ngModel)]="showAll" (change)="applyFilter()" style="margin-right: 15px;">
+            Show All
+        </mat-checkbox>
+        <button mat-raised-button color="accent" (click)="openBatchPayment()" style="margin-right: 10px;">
+            <mat-icon>checklist</mat-icon>
+            Batch Pay
+        </button>
         <button mat-raised-button color="primary" (click)="onCreate()">
             <mat-icon>add</mat-icon>
             Add Invoice

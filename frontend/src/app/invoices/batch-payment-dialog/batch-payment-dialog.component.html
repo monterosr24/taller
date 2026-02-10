@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>Batch Payment Reconciliation</h2>
+
+<mat-dialog-content>
+    <div *ngIf="step === 'input'">
+        <p>Select a Supplier (Optional) to validate invoice numbers:</p>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Supplier</mat-label>
+            <mat-select [(ngModel)]="selectedSupplierId">
+                <mat-option [value]="null">-- Any Supplier --</mat-option>
+                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                    {{ supplier.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <p>Paste invoice numbers (separated by commas or new lines):</p>
+        <mat-form-field appearance="outline" class="full-width">
+            <textarea matInput [(ngModel)]="inputNumbers" rows="10" placeholder="INV-001, INV-002..."></textarea>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="step === 'verify'">
+        <!-- Not Found Warning -->
+        <div *ngIf="notFoundNumbers.length > 0" class="warning-box">
+            <mat-icon color="warn">error</mat-icon>
+            <span><strong>{{ notFoundNumbers.length }} invoices not found:</strong> {{ notFoundNumbers.join(', ')
+                }}</span>
+        </div>
+
+        <!-- Already Paid Warning -->
+        <div *ngIf="alreadyPaidInvoices.length > 0" class="info-box">
+            <mat-icon color="primary">check_circle</mat-icon>
+            <span><strong>{{ alreadyPaidInvoices.length }} invoices already paid:</strong>
+                <span *ngFor="let inv of alreadyPaidInvoices; let last = last">{{ inv.invoiceNumber }}<span
+                        *ngIf="!last">, </span></span>
+            </span>
+        </div>
+
+        <!-- Found List -->
+        <h3>Payable Invoices ({{ foundInvoices.length }})</h3>
+        <div class="invoice-list">
+            <div *ngFor="let invoice of foundInvoices" class="invoice-item">
+                <mat-checkbox [checked]="selectedInvoiceIds.has(invoice.id!)" (change)="toggleSelection(invoice.id!)">
+                    <span class="invoice-number">{{ invoice.invoiceNumber }}</span>
+                    <span class="invoice-supplier">{{ invoice.supplier?.name }}</span>
+                    <span class="invoice-amount">${{ invoice.totalAmount | number }}</span>
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <h3>Total to Pay: <span class="total-amount">${{ totalAmount | number }}</span></h3>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="isProcessing">Cancel</button>
+
+    <button mat-button *ngIf="step === 'verify'" (click)="onBack()" [disabled]="isProcessing">Back</button>
+
+    <button mat-raised-button color="primary" *ngIf="step === 'input'" (click)="onVerify()"
+        [disabled]="!inputNumbers.trim() || isProcessing">
+        <mat-spinner *ngIf="isProcessing" diameter="20"></mat-spinner>
+        <span *ngIf="!isProcessing">Verify</span>
+    </button>
+
+    <button mat-raised-button color="accent" *ngIf="step === 'verify'" (click)="onPay()"
+        [disabled]="selectedInvoiceIds.size === 0 || isProcessing">
+        <mat-spinner *ngIf="isProcessing" diameter="20"></mat-spinner>
+        <span *ngIf="!isProcessing">Pay Selected</span>
+    </button>
+</mat-dialog-actions>

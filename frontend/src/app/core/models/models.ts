@@ -78,6 +78,7 @@ export interface Invoice {
     id?: number;
     invoiceNumber: string;
     supplierId: number;
+    supplier?: Supplier; // Full relation
     supplierName?: string; // For display purposes
     description?: string;
     totalAmount: number;

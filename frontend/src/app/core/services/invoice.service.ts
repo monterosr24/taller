@@ -30,4 +30,12 @@ export class InvoiceService {
     delete(id: number): Observable<void> {
         return this.api.delete<void>(`${this.endpoint}/${id}`);
     }
+
+    reconcile(invoiceNumbers: string[], supplierId?: number): Observable<{ payable: Invoice[], alreadyPaid: Invoice[], notFound: string[], totalAmount: number }> {
+        return this.api.post<{ payable: Invoice[], alreadyPaid: Invoice[], notFound: string[], totalAmount: number }>(`${this.endpoint}/reconcile`, { invoiceNumbers, supplierId });
+    }
+
+    batchPay(invoiceIds: number[]): Observable<void> {
+        return this.api.post<void>(`${this.endpoint}/batch-pay`, { invoiceIds });
+    }
 }

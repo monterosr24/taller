@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -52,17 +53,13 @@ import { AdvanceListDialogComponent } from './jobs/advance-list-dialog/advance-l
 // Invoice components
 import { InvoiceListComponent } from './invoices/invoice-list/invoice-list.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
-// InvoiceUploadComponent removed
+import { BatchPaymentDialogComponent } from './invoices/batch-payment-dialog/batch-payment-dialog.component';
 import { PaymentDialogComponent } from './invoices/payment-dialog/payment-dialog.component';
 
 // Supplier components
 import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.component';
 import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
 import { DataTableComponent } from './shared/components/data-table/data-table.component';
-// Template components
-// Template components removed
-
-import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [
@@ -80,14 +77,13 @@ import { MatTabsModule } from '@angular/material/tabs';
         AdvanceListDialogComponent,
         InvoiceListComponent,
         InvoiceFormComponent,
-        // InvoiceUploadComponent removed
         PaymentDialogComponent,
+        BatchPaymentDialogComponent,
         SupplierListComponent,
         SupplierFormComponent,
         DataTableComponent,
         VacationRequestDialogComponent,
-        SalaryAdvanceDialogComponent,
-        // Template components removed
+        SalaryAdvanceDialogComponent
     ],
     imports: [
         BrowserModule,

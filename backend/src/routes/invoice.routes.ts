@@ -88,4 +88,57 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 });
 
+// POST /api/invoices/reconcile
+router.post('/reconcile', async (req: Request, res: Response) => {
+    try {
+        const { invoiceNumbers, supplierId } = req.body; // Array of strings, optional supplierId
+        if (!invoiceNumbers || !Array.isArray(invoiceNumbers)) {
+            return res.status(400).json({ error: 'Invalid input. Expected invoiceNumbers array.' });
+        }
+
+        // Clean input (trim)
+        const cleanNumbers = invoiceNumbers.map((n: string) => n.trim()).filter((n: string) => n.length > 0);
+
+        const foundInvoices = await invoiceRepo.findByInvoiceNumbers(cleanNumbers, supplierId);
+        const foundNumbers = foundInvoices.map(inv => inv.invoiceNumber);
+
+        // Identify missing
+        const notFound = cleanNumbers.filter(n => !foundNumbers.includes(n));
+
+        // Separate Paid and Payable
+        const alreadyPaid = foundInvoices.filter(inv => inv.paymentStatus === 'paid');
+        const payable = foundInvoices.filter(inv => inv.paymentStatus !== 'paid');
+
+        // Calculate total of PAYABLE invoices
+        const totalAmount = payable.reduce((sum, inv) => sum + Number(inv.totalAmount), 0);
+
+        res.json({
+            payable, // Was 'found'
+            alreadyPaid,
+            notFound,
+            totalAmount
+        });
+
+    } catch (error) {
+        console.error('Reconcile error:', error);
+        res.status(500).json({ error: 'Failed to reconcile invoices' });
+    }
+});
+
+// POST /api/invoices/batch-pay
+router.post('/batch-pay', async (req: Request, res: Response) => {
+    try {
+        const { invoiceIds } = req.body; // Array of numbers
+        if (!invoiceIds || !Array.isArray(invoiceIds) || invoiceIds.length === 0) {
+            return res.status(400).json({ error: 'Invalid input. Expected invoiceIds array.' });
+        }
+
+        await invoiceRepo.batchPay(invoiceIds);
+        res.json({ message: 'Invoices processed successfully' });
+    } catch (error) {
+        console.error('Batch pay error:', error);
+        res.status(500).json({ error: 'Failed to batch pay invoices' });
+    }
+});
+
 export default router;

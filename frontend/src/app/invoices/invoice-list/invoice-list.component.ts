@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { InvoiceService } from '../../core/services/invoice.service';
 import { Invoice } from '../../core/models/models';
 import { ColumnConfig, TableAction, TableConfig } from '../../shared/components/data-table/models/table-config.model';
 import { FilterType } from '../../shared/components/data-table/models/filter-config.model';
+import { BatchPaymentDialogComponent } from '../batch-payment-dialog/batch-payment-dialog.component';
 
 @Component({
     selector: 'app-invoice-list',
@@ -12,14 +14,32 @@ import { FilterType } from '../../shared/components/data-table/models/filter-con
 })
 export class InvoiceListComponent implements OnInit {
     invoices: Invoice[] = [];
+    allInvoices: Invoice[] = []; // Store full list
     columns: ColumnConfig[] = [];
     tableConfig: TableConfig = {};
     actions: TableAction<Invoice>[] = [];
+    showAll: boolean = false;
 
     constructor(
         private invoiceService: InvoiceService,
-        private router: Router
+        private router: Router,
+        private dialog: MatDialog
     ) { }
+
+    // ...
+
+    openBatchPayment(): void {
+        const dialogRef = this.dialog.open(BatchPaymentDialogComponent, {
+            width: '600px',
+            disableClose: true
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadInvoices();
+            }
+        });
+    }
 
     ngOnInit(): void {
         this.setupColumns();
@@ -116,16 +136,30 @@ export class InvoiceListComponent implements OnInit {
     private loadInvoices(): void {
         this.invoiceService.getAll().subscribe({
             next: (data) => {
-                // Map supplier.name to supplierName for display
-                this.invoices = data.map((invoice: any) => ({
+                // Map supplier.name and store
+                this.allInvoices = data.map((invoice: any) => ({
                     ...invoice,
                     supplierName: invoice.supplier?.name || 'N/A'
                 }));
+                this.applyFilter();
             },
             error: (error) => {
                 console.error('Error loading invoices:', error);
             }
         });
+    }
+
+    applyFilter(): void {
+        if (this.showAll) {
+            this.invoices = [...this.allInvoices];
+        } else {
+            this.invoices = this.allInvoices.filter(inv => inv.paymentStatus !== 'paid' && inv.paymentStatus !== 'cancelled');
+        }
+    }
+
+    toggleShowAll(): void {
+        this.showAll = !this.showAll;
+        this.applyFilter();
     }
 
     onCreate(): void {

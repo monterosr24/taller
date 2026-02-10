@@ -95,4 +95,49 @@ export class InvoiceRepository {
             return false;
         }
     }
+
+    async findByInvoiceNumbers(numbers: string[], supplierId?: number): Promise<Invoice[]> {
+        return await prisma.invoice.findMany({
+            where: {
+                invoiceNumber: {
+                    in: numbers
+                },
+                ...(supplierId ? { supplierId } : {})
+            },
+            include: {
+                supplier: true
+            }
+        });
+    }
+
+    async batchPay(ids: number[]): Promise<void> {
+        const invoices = await prisma.invoice.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, totalAmount: true }
+        });
+
+        await prisma.$transaction(async (tx) => {
+            for (const inv of invoices) {
+                // Update Invoice
+                await tx.invoice.update({
+                    where: { id: inv.id },
+                    data: {
+                        paymentStatus: 'paid',
+                        paidAmount: inv.totalAmount
+                    }
+                });
+
+                // Create Payment Record
+                await tx.invoicePayment.create({
+                    data: {
+                        invoiceId: inv.id,
+                        paymentAmount: inv.totalAmount,
+                        paymentDate: new Date(),
+                        paymentMethod: 'Batch Reconciliation',
+                        notes: 'Auto-created via Batch Payment'
+                    }
+                });
+            }
+        });
+    }
 }
